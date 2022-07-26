@@ -174,7 +174,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get } from "firebase/database"
 
 export default {
@@ -221,7 +221,7 @@ export default {
             for (let i in this.sala.inscricoes) {
                 let userID = this.sala.inscricoes[i]
                 //console.log(userID);
-                get(ref(rdb,"/salamais/usuarios/"+userID)).then((snap) => {
+                get(rdbref("usuarios/"+userID)).then((snap) => {
                     let data = snap.val()
                     //console.log(`user: ${userID}`, data);
                     self.inscritos.push(data)

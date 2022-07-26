@@ -78,7 +78,7 @@
 
 <script>
 //import { cb } from "../../../clapback/clapback.js"
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -123,7 +123,7 @@ export default {
             let self = this
 
             //let model = cb("salamais").coll("formacoes")
-            onValue(ref(rdb, "/salamais/formacoes"), (snap) => {
+            onValue(rdbref("formacoes"), (snap) => {
                 let data = snapToArray(snap)
                 //console.log(data);
                 self.rows = data
@@ -135,7 +135,7 @@ export default {
             let self = this
             this.removeDialog[item.id] = false
             console.log(item);
-            set(ref(rdb, "/salamais/formacoes/" + item.id), null)
+            set(rdbref("formacoes/" + item.id), null)
             self.$q.notify(notif.success("Formação excluida com sucesso"))
         }
     }

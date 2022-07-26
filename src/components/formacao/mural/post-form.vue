@@ -36,7 +36,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
@@ -76,9 +76,9 @@ export default {
                 userID: this.userStore.user.id,
                 emailSent: this.enviarEmail
             }
-            let path = "/salamais/postagens/"+this.$route.params.id+"/"+item.id
+            let path = "postagens/"+this.$route.params.id+"/"+item.id
             console.log(path,item);
-            set(ref(rdb,path),item)
+            set(rdbref(path),item)
             //console.log(item);
             self.mensagem = ""
             self.$q.notify(notif.success("Mensagem enviada com sucesso!"))

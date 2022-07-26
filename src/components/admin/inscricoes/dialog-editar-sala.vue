@@ -163,7 +163,7 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import selecionaruser from "./selecionar-user.vue"
 import notif from "../../../notif.js"
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get } from "firebase/database"
 import facilitadorinfo from "./facilitador-info.vue"
 
@@ -205,7 +205,7 @@ export default {
 
         loadModeloOptions() {
             let self = this
-            get(ref(rdb, "/salamais/modelosCertificados")).then((snap) => {
+            get(rdbref("modelosCertificados")).then((snap) => {
                 let modelos = snap.val()
                 self.modeloOptions = []
                 for (let key in modelos) {
@@ -263,7 +263,7 @@ export default {
             //console.log("facilitador", this.facilitador);
             //console.log("link", this.link);
 
-            let path = "/salamais/formacoes/" + this.formacao.id + "/encontros/" + this.encontro.id
+            let path = "formacoes/" + this.formacao.id + "/encontros/" + this.encontro.id
             //console.log("path", path);
             if (this.formacao.turmasPorArea) {
                 //console.log("self.area", self.area);
@@ -272,14 +272,14 @@ export default {
                 path = path + "/salas/" + this.sala.id + "/"
             }
             //console.log("path", path);
-            set(ref(rdb, path + "facilitadores"), null)
+            set(rdbref(path + "facilitadores"), null)
             for (let i in self.facilitadores) {
-                set(ref(rdb, path + "facilitadores/" + self.facilitadores[i]), self.facilitadores[i])
+                set(rdbref(path + "facilitadores/" + self.facilitadores[i]), self.facilitadores[i])
                 //console.log(path + "facilitadores/" + self.facilitadores[i], self.facilitadores[i]);
             }
-            set(ref(rdb, path + "link"), self.link)
-            set(ref(rdb, path + "modeloCertificado"), self.modeloCert);
-            set(ref(rdb, path + "chCertificado"), self.chCertificado);
+            set(rdbref(path + "link"), self.link)
+            set(rdbref(path + "modeloCertificado"), self.modeloCert);
+            set(rdbref(path + "chCertificado"), self.chCertificado);
 
             self.dialog = false
             self.$q.notify(notif.success("Facilitador / Link atualizado com sucesso!"))
@@ -292,14 +292,14 @@ export default {
                 let userKey = self.facilitadores[i]
                 if (self.sala.facilitadores[userKey] == undefined) {
                     //console.log("adicionar: ", userKey);
-                    let path = "/salamais/facilitadores/" + userKey
+                    let path = "facilitadores/" + userKey
                     //console.log(path + "/id", userKey);
-                    set(ref(rdb, path + "/id"), userKey)
+                    set(rdbref(path + "/id"), userKey)
                     path = path + "/formacoes/" + this.formacao.id
                     //console.log(path + "/id", this.formacao.id);
-                    set(ref(rdb, path + "/id"), this.formacao.id)
+                    set(rdbref(path + "/id"), this.formacao.id)
                     //console.log(path + "/encontros/" + this.encontro.id, this.encontro.id);
-                    set(ref(rdb, path + "/encontros/" + this.encontro.id), {
+                    set(rdbref(path + "/encontros/" + this.encontro.id), {
                         id: this.encontro.id,
                         area: self.area,
                         salaID: self.sala.id
@@ -307,22 +307,22 @@ export default {
                 }
             }
             function removeFacilitadorVazio(userKey) {
-                get(ref(rdb, "/salamais/facilitadores/" + userKey)).then((snap) => {
+                get(rdbref("facilitadores/" + userKey)).then((snap) => {
                     let data = snap.val()
                     //console.log("facilitador sem formação?", data.formacoes);
                     if (data.formacoes == undefined) {
                         //console.log(path, null);
-                        set(ref(rdb, "/salamais/facilitadores/" + userKey), null)
+                        set(rdbref("facilitadores/" + userKey), null)
                     }
                 })
             }
             function removeEncontrosVazio(path, userKey) {
-                get(ref(rdb, path + "/encontros/")).then((snap) => {
+                get(rdbref(path + "/encontros/")).then((snap) => {
                     let data = snap.val()
                     //console.log("tem encontros?", data);
                     if (data == null) {
                         //console.log(path, null);
-                        set(ref(rdb, path), null)
+                        set(rdbref(path), null)
                         removeFacilitadorVazio(userKey)
                     }
                 })
@@ -331,10 +331,10 @@ export default {
                 let userKey = self.sala.facilitadores[i]
                 if (self.facilitadores[userKey] == undefined) {
                     //console.log("remover: ", userKey);
-                    let path = "/salamais/facilitadores/" + userKey
+                    let path = "facilitadores/" + userKey
                     path = path + "/formacoes/" + this.formacao.id
                     //console.log(path + "/encontros/" + this.encontro.id, null);
-                    set(ref(rdb, path + "/encontros/" + this.encontro.id), null)
+                    set(rdbref(path + "/encontros/" + this.encontro.id), null)
                     removeEncontrosVazio(path, userKey)
                 }
             }

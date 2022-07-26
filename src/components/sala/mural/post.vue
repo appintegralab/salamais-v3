@@ -63,7 +63,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
@@ -101,7 +101,7 @@ export default {
 
         load() {
             let self = this
-            onValue(ref(rdb, "/salamais/usuarios/" + this.post.userID), (snap) => {
+            onValue(rdbref("usuarios/" + this.post.userID), (snap) => {
                 self.user = snap.val()
             })
         },

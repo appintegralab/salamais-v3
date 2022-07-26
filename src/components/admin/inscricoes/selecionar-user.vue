@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 
 export default {
@@ -91,7 +91,7 @@ export default {
     mounted() {
         let self = this
         //console.log("dialog mounted", userStore.user);
-        onValue(ref(rdb, "/salamais/usuarios"), (snap) => {
+        onValue(rdbref("usuarios"), (snap) => {
             let data = snapToArray(snap)
             self.users = data
         })

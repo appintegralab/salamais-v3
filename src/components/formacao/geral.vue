@@ -129,7 +129,7 @@
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { userStore } from "@/stores/user-store"
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 import badgearea from "@/components/utils/badge-area.vue"
 import dialoginscricao from "@/components/home/dialog-inscricao.vue"
@@ -165,7 +165,7 @@ export default {
 
         load() {
             let self = this
-            let queryRef = query(ref(rdb, "/salamais/inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
+            let queryRef = query(rdbref("inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
             onValue(queryRef, (snap) => {
                 self.formacaoObj = JSON.parse(JSON.stringify(self.formacao))
                 self.formacaoObj.inscricao = false
@@ -197,14 +197,14 @@ export default {
                 console.log("encontro", encontro);
                 let path = ""
                 if (encontro.area == undefined || encontro.area == "") {
-                    path = "/salamais/formacoes/" + this.formacaoObj.id + "/encontros/" + encontro.encontroID + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
+                    path = "formacoes/" + this.formacaoObj.id + "/encontros/" + encontro.encontroID + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
                 } else {
-                    path = "/salamais/formacoes/" + this.formacaoObj.id + "/encontros/" + encontro.encontroID + "/areas/" + encontro.area + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
+                    path = "formacoes/" + this.formacaoObj.id + "/encontros/" + encontro.encontroID + "/areas/" + encontro.area + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
                 }
                 console.log("path", path);
-                set(ref(rdb, path), null)
+                set(rdbref(path), null)
             }
-            set(ref(rdb, "/salamais/inscricoes/" + this.formacaoObj.inscricaoID), null)
+            set(rdbref("inscricoes/" + this.formacaoObj.inscricaoID), null)
             self.$q.notify(notif.success("Inscrição cancelada com sucesso!"))
             self.removeDialog = false
             //self.$emit('removeInscricao')

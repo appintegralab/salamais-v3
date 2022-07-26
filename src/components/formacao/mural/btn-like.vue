@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import { userStore } from "@/stores/user-store"
 import moment from 'moment/min/moment-with-locales'
@@ -71,7 +71,7 @@ export default {
         load() {
             let self = this
 
-            onValue(ref(rdb, "/salamais/likes/" + this.postID), (snap) => {
+            onValue(rdbref("likes/" + this.postID), (snap) => {
                 self.likes = snap.val()
                 console.log("self.likes", self.likes);
                 self.iLiked = false
@@ -86,12 +86,12 @@ export default {
         liked() {
             console.log("this.iLiked",this.iLiked);
             console.log("this.postID",this.postID);
-            let path = "/salamais/likes/"+this.postID+"/"+this.userStore.user.id
+            let path = "likes/"+this.postID+"/"+this.userStore.user.id
             console.log(path);
             if(this.iLiked) {
-                set(ref(rdb,path),null)
+                set(rdbref(path),null)
             } else {
-                set(ref(rdb,path),moment().format())
+                set(rdbref(path),moment().format())
             }
         }
     },

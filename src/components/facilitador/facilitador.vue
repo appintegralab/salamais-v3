@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -159,13 +159,13 @@ export default {
         async load() {
             let self = this
 
-            onValue(ref(rdb, "/salamais/facilitadores/" + this.userStore.user.id), async (snap) => {
+            onValue(rdbref("facilitadores/" + this.userStore.user.id), async (snap) => {
                 let formacoes = snap.val()
                 self.rows = []
                 if (formacoes) {
                     console.log("formacoes", formacoes.formacoes);
                     for (let key in formacoes.formacoes) {
-                        let snap = await get(ref(rdb, "/salamais/formacoes/" + key))
+                        let snap = await get(rdbref("formacoes/" + key))
                         let formacao = snap.val()
                         console.log("formacao", formacao);
                         let encontros = formacoes.formacoes[key].encontros

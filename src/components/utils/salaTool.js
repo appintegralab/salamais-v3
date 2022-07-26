@@ -1,4 +1,4 @@
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 const salaTool = {
@@ -21,7 +21,7 @@ const salaTool = {
             salaTool.formacaoID = formacaoID
             salaTool.salaID = salaID
 
-            onValue(ref(rdb, "/salamais/formacoes/" + formacaoID), (snap) => {
+            onValue(rdbref("formacoes/" + formacaoID), (snap) => {
                 //console.log(snap.val());
                 salaTool.formacao = snap.val()
                 if (salaTool.formacao == null) {

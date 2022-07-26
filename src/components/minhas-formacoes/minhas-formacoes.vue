@@ -28,7 +28,7 @@ import 'moment/locale/pt-br.js'
 import { userStore } from "../../stores/user-store"
 import formacao from "../home/caixa-formacao.vue"
 import formacaoinsc from "./caixa-formacao-insc.vue"
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 
@@ -56,7 +56,7 @@ export default {
         load() {
             let self = this
             if(this.userStore.user == undefined) return
-            let queryRef = query(ref(rdb, "/salamais/inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
+            let queryRef = query(rdbref("inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
             onValue(queryRef, (snap) => {
                 let inscricoes = snap.val()
                 console.log("inscricoes", inscricoes);
@@ -67,7 +67,7 @@ export default {
                     async function getFormacao(inscricao) {
                         //console.log("inscricao", inscricao);
                         //let data = await cb("salamais").coll("formacoes").getID(inscricao.formacaoID)
-                        let snap = await get(ref(rdb,"/salamais/formacoes/" + inscricao.formacaoID))
+                        let snap = await get(rdbref("formacoes/" + inscricao.formacaoID))
                         let formacao = snap.val()
                         console.log("formacao", formacao);
                         formacao.inscricao = false

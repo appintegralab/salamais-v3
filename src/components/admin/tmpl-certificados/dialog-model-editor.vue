@@ -159,9 +159,9 @@ export default {
                     urlImage: ret.urlImage,
                     contents: contents
                 }
-                let path = "/salamais/modelosCertificados/"+item.id
+                let path = "modelosCertificados/"+item.id
                 console.log(path,item);
-                set(ref(rdb,path),item)
+                set(rdbref(path),item)
                 notify.success('Modelo cadastrado com sucesso.')
                 this.dialog = false
             } else {
@@ -171,9 +171,9 @@ export default {
                     urlImage: ret.urlImage,
                     contents: contents
                 }
-                let path = "/salamais/modelosCertificados/"+item.id
+                let path = "modelosCertificados/"+item.id
                 console.log(path,item);
-                set(ref(rdb,path),item)
+                set(rdbref(path),item)
                 notify.success('Modelo alterado com sucesso.')
                 this.dialog = false
             }

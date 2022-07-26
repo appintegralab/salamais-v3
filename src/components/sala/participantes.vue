@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, get } from "firebase/database"
 import badgearea from "@/components/utils/badge-area.vue"
 import _cargos from "@/components/profile/cargos.js"
@@ -114,7 +114,7 @@ export default {
             console.log("participantes this.sala", this.sala);
             this.rows = []
             async function getUser(userKey) {
-                get(ref(rdb, "/salamais/usuarios/" + userKey)).then((snap) => {
+                get(rdbref("usuarios/" + userKey)).then((snap) => {
                     let user = snap.val()
                     self.rows.push(user)
                 })

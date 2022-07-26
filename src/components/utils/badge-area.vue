@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 
 export default {
@@ -37,7 +37,7 @@ export default {
         let self = this
         let id = this.sigla
         console.log("id", id);
-        get(ref(rdb, "/salamais/areas/"+id)).then((snap) => {
+        get(rdbref("areas/"+id)).then((snap) => {
             let data = snap.val()
             self.area = data
             console.log("self.area", self.area);

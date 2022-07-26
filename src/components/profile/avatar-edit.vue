@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, orderByChild, equalTo, onValue, set } from "firebase/database"
 import { userStore } from "../../stores/user-store"
 import { storage } from '@/firebase/firebase.js'
@@ -85,7 +85,7 @@ export default {
                 this.isMe = true
                 this.user = this.userStore.user
             } else {
-                onValue(ref(rdb, "/salamais/usuarios/" + this.userID), (snap) => {
+                onValue(rdbref("usuarios/" + this.userID), (snap) => {
                     self.user = snap.val()
                 })
             }
@@ -109,9 +109,9 @@ export default {
 
         saveUrl(url) {
             //console.log("saveUrl", url);
-            let path = "/salamais/usuarios/" + this.userID + "/urlFoto"
+            let path = "usuarios/" + this.userID + "/urlFoto"
             //console.log(path, url);
-            set(ref(rdb, path), url)
+            set(rdbref(path), url)
             this.user.urlFoto = url
         }
     },

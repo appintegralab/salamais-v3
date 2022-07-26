@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -86,7 +86,7 @@ export default {
         pushUser(userID) {
             let self = this
             //console.log("pushUser",userID);
-            get(ref(rdb, "/salamais/usuarios/" + userID)).then((snap) => {
+            get(rdbref("usuarios/" + userID)).then((snap) => {
                 let user = snap.val()
                 console.log("user", user);
                 self.rows.push(user)
@@ -95,7 +95,7 @@ export default {
 
         load() {
             let self = this
-            onValue(ref(rdb, "/salamais/facilitadores"), (snap) => {
+            onValue(rdbref("/facilitadores"), (snap) => {
                 let facilitadores = snap.val()
                 console.log("facilitadores", facilitadores);
                 for (let key in facilitadores) {

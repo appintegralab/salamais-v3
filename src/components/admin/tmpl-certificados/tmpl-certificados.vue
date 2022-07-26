@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -94,7 +94,7 @@ export default {
 
         load() {
             let self = this
-            onValue(ref(rdb, "/salamais/modelosCertificados"), (snap) => {
+            onValue(rdbref("modelosCertificados"), (snap) => {
                 let modelos = snap.val()
                 console.log("modelos", modelos);
                 self.rows = []

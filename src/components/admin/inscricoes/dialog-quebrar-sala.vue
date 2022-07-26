@@ -223,7 +223,7 @@ export default {
         },
 
         getUsersInscricaoID: async function (todosInscritos) {
-            let queryRef = query(ref(rdb, "/salamais/inscricoes/"), orderByChild("formacaoID"), equalTo(this.formacao.id))
+            let queryRef = query(rdbref("inscricoes/"), orderByChild("formacaoID"), equalTo(this.formacao.id))
             let snap = await get(queryRef)
             let data = snap.val()
             let todosInscritosKey = {}
@@ -337,15 +337,15 @@ export default {
 
             if (this.formacao.turmasPorArea) {
                 console.log("area", this.area);
-                let pathEncontro = "/salamais/formacoes/" + this.formacao.id
+                let pathEncontro = "formacoes/" + this.formacao.id
                 pathEncontro = pathEncontro + "/encontros/" + this.encontro.id
                 //pathSalas = pathSalas + "/areas/" + this.area.id + "/salas"
                 //console.log("pathEncontro", pathEncontro);
 
                 console.log(pathEncontro + "/areas/" + this.area.id + "/salaIDCtrl", this.encontro.areas[this.area.id].salaIDCtrl);
                 console.log(pathEncontro + "/areas/" + this.area.id + "/salas", this.salas);
-                set(ref(rdb,pathEncontro + "/areas/" + this.area.id + "/salaIDCtrl"), this.encontro.areas[this.area.id].salaIDCtrl);
-                set(ref(rdb,pathEncontro + "/areas/" + this.area.id + "/salas"), this.salas);
+                set(rdbref(pathEncontro + "/areas/" + this.area.id + "/salaIDCtrl"), this.encontro.areas[this.area.id].salaIDCtrl);
+                set(rdbref(pathEncontro + "/areas/" + this.area.id + "/salas"), this.salas);
 
 
 
@@ -354,32 +354,32 @@ export default {
                     for (let i in this.salas[key].inscricoes) {
                         let userID = this.salas[key].inscricoes[i]
                         console.log("userID",userID);
-                        let path = "/salamais/inscricoes/" + this.userInscricaoID[userID].inscricaoID
+                        let path = "inscricoes/" + this.userInscricaoID[userID].inscricaoID
                         path = path + "/encontros/" + this.encontro.id
                         console.log(path + "/sala", salaID);
-                        set(ref(rdb,path + "/sala"), salaID);
+                        set(rdbref(path + "/sala"), salaID);
                     }
                 }
 
             } else {
                 console.log("não tem área");
-                let pathEncontro = "/salamais/formacoes/" + this.formacao.id
+                let pathEncontro = "formacoes/" + this.formacao.id
                 pathEncontro = pathEncontro + "/encontros/" + this.encontro.id
 
                 console.log(pathEncontro + "/salaIDCtrl", this.encontro.salaIDCtrl);
                 console.log(pathEncontro + "/salas", this.salas);
-                set(ref(rdb,pathEncontro + "/salaIDCtrl"), this.encontro.salaIDCtrl);
-                set(ref(rdb,pathEncontro + "/salas"), this.salas);
+                set(rdbref(pathEncontro + "/salaIDCtrl"), this.encontro.salaIDCtrl);
+                set(rdbref(pathEncontro + "/salas"), this.salas);
                 
 
                 for (let key in this.salas) {
                     let salaID = parseInt(key.substring(4))
                     for (let i in this.salas[key].inscricoes) {
                         let userID = this.salas[key].inscricoes[i]
-                        let path = "/salamais/inscricoes/" + this.userInscricaoID[userID].inscricaoID
+                        let path = "inscricoes/" + this.userInscricaoID[userID].inscricaoID
                         path = path + "/encontros/" + this.encontro.id
                         console.log(path + "/sala", salaID);
-                        set(ref(rdb,path + "/sala"), salaID);
+                        set(rdbref(path + "/sala"), salaID);
                     }
                 }
             }

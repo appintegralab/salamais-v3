@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get } from "firebase/database"
 import { userStore } from "@/stores/user-store"
 
@@ -64,7 +64,7 @@ export default {
         'userStore.user': function (newValue) {
             //console.log("watch store", this.userStore.user);
             let self = this
-            get(ref(rdb, "/salamais/facilitadores/" + this.userStore.user.id)).then((snap) => {
+            get(rdbref("facilitadores/" + this.userStore.user.id)).then((snap) => {
                 if (snap.val() != null) {
                     self.facilitador = true
                     self.$forceUpdate()
@@ -76,7 +76,7 @@ export default {
     },
     mounted() {
         let self = this
-        get(ref(rdb, "/salamais/facilitadores/" + this.userStore.user.id)).then((snap) => {
+        get(rdbref("facilitadores/" + this.userStore.user.id)).then((snap) => {
             if (snap.val() != null) {
                 self.facilitador = true
             } else {

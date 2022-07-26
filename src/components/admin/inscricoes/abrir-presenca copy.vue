@@ -14,7 +14,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 
@@ -50,9 +50,9 @@ export default {
         load() {
             let self = this
             if (this.formacao && this.encontro) {
-                let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+                let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
                 console.log("path", path);
-                onValue(ref(rdb, path + "/presencaAberta"), (snap) => {
+                onValue(rdbref(path + "/presencaAberta"), (snap) => {
                     self.aberta = snap.val()
                     console.log("self.aberta", self.aberta);
                 })
@@ -65,9 +65,9 @@ export default {
             console.log("this.formacao", this.formacao);
             console.log("this.encontro", this.encontro);
 
-            let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+            let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
             console.log("path", path);
-            set(ref(rdb, path + "/presencaAberta"),true)
+            set(rdbref(path + "/presencaAberta"),true)
             self.$q.notify(notif.success("Lista de presença aberta com sucesso!"))
                 
         },
@@ -75,9 +75,9 @@ export default {
         fecharPresenca() {
             let self = this
             console.log("fecharPresenca");
-            let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+            let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
             console.log("path", path);
-            set(ref(rdb, path + "/presencaAberta"),false)
+            set(rdbref(path + "/presencaAberta"),false)
             self.$q.notify(notif.success("Lista de presença fechada com sucesso!"))
         }
     },

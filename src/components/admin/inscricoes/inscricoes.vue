@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -69,7 +69,7 @@ export default {
             console.log("salaUpdate");
             console.log("this.formacaoSel", this.formacaoSel);
             if (this.formacaoSel != null) {
-                get(ref(rdb,"/salamais/formacoes/"+this.formacaoSel.id)).then((snap)=> {
+                get(rdbref("formacoes/"+this.formacaoSel.id)).then((snap)=> {
                     self.formacaoSel = snap.val()
                 })
 //                let model = cb("salamais").coll("formacoes")

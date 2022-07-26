@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, get } from "firebase/database"
 
 export default {
@@ -51,7 +51,7 @@ export default {
     methods: {
         load() {
             let self = this
-            get(ref(rdb,"/salamais/usuarios/"+this.userID)).then((snap) => {
+            get(rdbref("usuarios/"+this.userID)).then((snap) => {
                 let user = snap.val()
                 if(user) {
                     self.user = user

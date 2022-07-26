@@ -63,7 +63,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
@@ -109,9 +109,9 @@ export default {
         load() {
             let self = this
             if (this.formacao && this.encontro) {
-                let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+                let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
                 console.log("path", path);
-                onValue(ref(rdb, path + "/presencaStatus"), (snap) => {
+                onValue(rdbref(path + "/presencaStatus"), (snap) => {
                     let status = snap.val()
                     if (status) {
                         self.status = status
@@ -124,9 +124,9 @@ export default {
             }
 
             let presencaID = this.$route.params.id
-            let path = "/salamais/listaPresenca/" + presencaID + "/" + this.userStore.user.id
+            let path = "listaPresenca/" + presencaID + "/" + this.userStore.user.id
             console.log("presencaID path", path);
-            onValue(ref(rdb, path), (snap) => {
+            onValue(rdbref(path), (snap) => {
                 let presenca = snap.val()
                 if (presenca) {
                     self.presenca = true
@@ -156,9 +156,9 @@ export default {
             let self = this
             console.log("registrarPresenca");
             let presencaID = this.$route.params.id
-            let path = "/salamais/listaPresenca/" + presencaID + "/" + this.userStore.user.id
+            let path = "listaPresenca/" + presencaID + "/" + this.userStore.user.id
             console.log("presencaID path", path);
-            set(ref(rdb, path), this.userStore.user.id)
+            set(rdbref(path), this.userStore.user.id)
             self.$q.notify(notif.success("Sua presença foi registrada com sucesso!"))
         },
 

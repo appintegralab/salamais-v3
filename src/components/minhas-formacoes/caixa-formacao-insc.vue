@@ -61,7 +61,7 @@ import 'moment/locale/pt-br.js'
 import caixaformacaoinfoinsc from "./caixa-formacao-info-insc.vue"
 import notif from "../../notif.js"
 import { userStore } from "@/stores/user-store"
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, set, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 export default {
@@ -97,14 +97,14 @@ export default {
                 console.log("encontro", encontro);
                 let path = ""
                 if (encontro.area == undefined || encontro.area == "") {
-                    path = "/salamais/formacoes/" + this.formacao.id + "/encontros/" + encontro.encontroID + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
+                    path = "formacoes/" + this.formacao.id + "/encontros/" + encontro.encontroID + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
                 } else {
-                    path = "/salamais/formacoes/" + this.formacao.id + "/encontros/" + encontro.encontroID + "/areas/" + encontro.area + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
+                    path = "formacoes/" + this.formacao.id + "/encontros/" + encontro.encontroID + "/areas/" + encontro.area + "/salas/sala" + encontro.sala + "/inscricoes/" + this.userStore.user.id
                 }
                 console.log("path", path);
-                set(ref(rdb, path), null)
+                set(rdbref(path), null)
             }
-            set(ref(rdb, "/salamais/inscricoes/" + this.formacao.inscricaoID), null)
+            set(rdbref("inscricoes/" + this.formacao.inscricaoID), null)
             self.$q.notify(notif.success("Inscrição cancelada com sucesso!"))
             self.removeDialog = false
             //self.$emit('removeInscricao')

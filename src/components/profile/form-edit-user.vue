@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get } from "firebase/database"
 import notif from "../../notif.js"
 import moment from 'moment/min/moment-with-locales'
@@ -149,7 +149,7 @@ export default {
     },
     mounted() {
         let self = this
-        get(ref(rdb, "/salamais/areas")).then((snap) => {
+        get(rdbref("areas")).then((snap) => {
             let data = snap.val()
             self.areas = data
         })
@@ -202,7 +202,7 @@ export default {
                 console.log(id);
             } else {
                 self.dialog = false
-                set(ref(rdb, "/salamais/usuarios/" + this.formData.id), this.formData)
+                set(rdbref("usuarios/" + this.formData.id), this.formData)
                 self.$emit('updated')
                 self.$q.notify(notif.success("Alteração de informações pessoais realizada com sucesso"))
             }

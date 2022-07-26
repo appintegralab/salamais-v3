@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, orderByChild, equalTo, onValue, query, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -170,7 +170,7 @@ export default {
         load() {
             let self = this
             console.log("formacao mounted", this.$route.params);
-            get(ref(rdb, "/salamais/usuarios/"+this.$route.params.id)).then((snap) => {
+            get(rdbref("usuarios/"+this.$route.params.id)).then((snap) => {
                 let data = snap.val()
                 if (data.areas == undefined) {
                     data.areas = []
@@ -190,7 +190,7 @@ export default {
                 self.$forceUpdate()
             })
 
-            get(ref(rdb, "/salamais/facilitadores/" + this.userStore.user.id)).then((snap) => {
+            get(rdbref("facilitadores/" + this.userStore.user.id)).then((snap) => {
                 let formacoes = snap.val()
                 //console.log("formacoes",formacoes);
                 if (formacoes != null) {
@@ -208,7 +208,7 @@ export default {
                 }
             })
 
-            let queryRef = query(ref(rdb, "/salamais/inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
+            let queryRef = query(rdbref("inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
             onValue(queryRef, (snap) => {
                 self.qtdeInscricoes = 0
                 let inscricoes = snap.val()

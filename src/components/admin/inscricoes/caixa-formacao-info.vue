@@ -95,7 +95,7 @@
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import salainfo from "./sala-info.vue"
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import dialoginscritos from "./dialog-inscritos.vue"
 import dialogeditar from "./dialog-editar-sala.vue"
@@ -121,7 +121,7 @@ export default {
     mounted() {
         let self = this
         //console.log("dialog mounted", userStore.user);
-        get(ref(rdb, "/salamais/areas")).then((snap) => {
+        get(rdbref("areas")).then((snap) => {
             let data = snap.val()
             self.areas = data
         })

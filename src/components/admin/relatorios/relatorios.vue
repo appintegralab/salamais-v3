@@ -23,7 +23,7 @@
 import XLSX from "xlsx"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 export default {
@@ -50,13 +50,13 @@ export default {
 
         exportInscricoes() {
 
-            get(ref(rdb, "/salamais/usuarios")).then((snap) => {
+            get(rdbref("usuarios")).then((snap) => {
                 let usuarios = snap.val()
                 //console.log("usuarios", usuarios);
-                get(ref(rdb, "/salamais/formacoes")).then((snap) => {
+                get(rdbref("formacoes")).then((snap) => {
                     let formacoes = snap.val()
                     //console.log("formacoes", formacoes);
-                    get(ref(rdb, "/salamais/inscricoes")).then((snap) => {
+                    get(rdbref("inscricoes")).then((snap) => {
                         let inscricoes = snap.val()
                         //console.log("inscricoes", inscricoes);
                         let records = []
@@ -95,7 +95,7 @@ export default {
 
         exportUsuarios() {
 
-            get(ref(rdb, "/salamais/usuarios")).then((snap) => {
+            get(rdbref("usuarios")).then((snap) => {
                 let usuarios = []
                 let data = snap.val()
                 for (let idx in data) {

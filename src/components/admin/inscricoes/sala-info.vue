@@ -115,7 +115,7 @@
 
 <script>
 import facilitadoravatar from "./facilitador-avatar.vue"
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue } from "firebase/database"
 
 export default {
@@ -146,7 +146,7 @@ export default {
         load() {
             let self = this
             if (this.area != null) {
-                onValue(ref(rdb, "/salamais/formacoes/" + this.formacao.id + "/encontros/" + this.encontroIdx + "/areas/" + this.area.id + "/salas/" + this.sala.id), (snap) => {
+                onValue(rdbref("formacoes/" + this.formacao.id + "/encontros/" + this.encontroIdx + "/areas/" + this.area.id + "/salas/" + this.sala.id), (snap) => {
                     console.log(snap.val());
                     self.salaObj = snap.val()
                     if(self.salaObj.inscricoes == undefined) {
@@ -155,7 +155,7 @@ export default {
                     self.loadFacilitador()
                 })
             } else {
-                onValue(ref(rdb, "/salamais/formacoes/" + this.formacao.id + "/encontros/" + this.encontroIdx + "/salas/" + this.sala.id), (snap) => {
+                onValue(rdbref("formacoes/" + this.formacao.id + "/encontros/" + this.encontroIdx + "/salas/" + this.sala.id), (snap) => {
                     console.log(snap.val());
                     self.salaObj = snap.val()
                     if(self.salaObj.inscricoes == undefined) {

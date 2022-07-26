@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 export default {
@@ -38,7 +38,7 @@ export default {
     mounted() {
         let self = this
         //console.log("dialog mounted", userStore.user);
-        get(ref(rdb, "/salamais/areas/")).then((snap) => {
+        get(rdbref("areas/")).then((snap) => {
             let data = snap.val()
             self.areas = data
         })

@@ -44,7 +44,7 @@ export default {
     methods: {
         load() {
             let self = this
-            get(ref(rdb, "/salamais/usuarios/" + this.userID)).then((snap) => {
+            get(rdbref("usuarios/" + this.userID)).then((snap) => {
                 let user = snap.val()
                 if (user) {
                     self.user = user

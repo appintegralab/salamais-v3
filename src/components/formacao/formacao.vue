@@ -97,7 +97,7 @@
 
 <script>
 import superbotao from "./super-botao.vue"
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, orderByChild, equalTo, onValue, query, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -139,7 +139,7 @@ export default {
 
         load() {
              let self = this
-            get(ref(rdb, "/salamais/formacoes/" + this.$route.params.id)).then((snap) => {
+            get(rdbref("formacoes/" + this.$route.params.id)).then((snap) => {
                 let data = snap.val()
                 self.formacao = data
                 console.log("self.formacao", self.formacao);

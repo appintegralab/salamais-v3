@@ -491,7 +491,7 @@ export default {
                             let salaIDCtrl = formacao.encontros[k].areas[area].salaIDCtrl
                             let path = `/salamais/formacoes/${formacao.id}/encontros/${k}/areas/${area}/salas/sala${salaIDCtrl}/inscricoes/`
                             console.log("path", path + self.userStore.user.id);
-                            set(ref(rdb, path + self.userStore.user.id), self.userStore.user.id)
+                            set(rdbref(path + self.userStore.user.id), self.userStore.user.id)
 
                             //for (let j in formacao.encontros[k].areas[area].salas) {
                             //    if (formacao.encontros[k].areas[area].salas[j].id == salaIDCtrl) {
@@ -508,9 +508,9 @@ export default {
                         } else {
                             //inscricao na sala comum
                             let salaIDCtrl = formacao.encontros[k].salaIDCtrl
-                            let path = `/salamais/formacoes/${formacao.id}/encontros/${k}/salas/sala${salaIDCtrl}/inscricoes/`
+                            let path = `formacoes/${formacao.id}/encontros/${k}/salas/sala${salaIDCtrl}/inscricoes/`
                             console.log("path", path + self.userStore.user.id);
-                            set(ref(rdb, path + self.userStore.user.id), self.userStore.user.id)
+                            set(rdbref(path + self.userStore.user.id), self.userStore.user.id)
 
                             //for (let j in formacao.encontros[k].salas) {
                             //    if (formacao.encontros[k].salas[j].id == salaIDCtrl) {
@@ -569,7 +569,7 @@ export default {
             //            })
 
             // Adiciona inscrição
-            set(ref(rdb, "/salamais/inscricoes/" + elem.id), elem)
+            set(rdbref("inscricoes/" + elem.id), elem)
             self.$emit('novaInscricao')
             self.$q.notify(notif.success("Inscrição realizada com sucesso"))
             let info = {

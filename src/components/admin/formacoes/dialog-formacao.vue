@@ -57,7 +57,7 @@
 <script>
 import { FormKitSchema } from '@formkit/vue'
 import notif from "../../../notif.js"
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -162,11 +162,11 @@ export default {
             item = { ...item, ...dados }
             console.log("item", item);
             if (this.isUpdate) {
-                set(ref(rdb, "/salamais/formacoes/" + item.id), item)
+                set(rdbref("formacoes/" + item.id), item)
                 self.$q.notify(notif.success("Formação alterada com sucesso"))
                 self.dialog = false
             } else {
-                set(ref(rdb, "/salamais/formacoes/" + item.id), item)
+                set(rdbref("formacoes/" + item.id), item)
                 self.$q.notify(notif.success("Formação cadastrada com sucesso"))
                 self.dialog = false
             }

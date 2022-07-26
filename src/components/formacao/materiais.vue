@@ -26,7 +26,7 @@
 import btnfileuploader from "./btn-file-uploader.vue"
 import material from "./materiais/material.vue"
 import { userStore } from "@/stores/user-store"
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, set, orderByChild, equalTo, onValue, query, get } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -61,7 +61,7 @@ export default {
         load() {
             let self = this
 
-            onValue(ref(rdb, "/salamais/materiaisApoio/" + this.$route.params.id), (snap) => {
+            onValue(rdbref("materiaisApoio/" + this.$route.params.id), (snap) => {
                 let data = snapToArray(snap)
                 console.log("data", data);
                 self.materiais = data
@@ -78,7 +78,7 @@ export default {
         newUpload(dados) {
             console.log("newUpload", dados);
             if (dados.tipo == "file") {
-                let path = "/salamais/materiaisApoio/" + this.$route.params.id
+                let path = "materiaisApoio/" + this.$route.params.id
                 let item = {
                     id: "MAT-APOIO-" + this.uuidv4(dados.nome),
                     nome: dados.nome,
@@ -87,7 +87,7 @@ export default {
                     tipo: dados.tipo
                 }
                 console.log(path + "/" + item.id, item);
-                set(ref(rdb, path + "/" + item.id), item)
+                set(rdbref(path + "/" + item.id), item)
                 this.$q.notify(notif.success("Material de apoio adicionado com sucesso!"))
             }
 
@@ -95,9 +95,9 @@ export default {
 
         excluir(elem) {
             console.log("excluir", elem);
-            let path = "/salamais/materiaisApoio/" + this.$route.params.id
+            let path = "materiaisApoio/" + this.$route.params.id
             console.log(path + "/" + elem.id, null);
-            set(ref(rdb, path + "/" + elem.id), null)
+            set(rdbref(path + "/" + elem.id), null)
             this.$q.notify(notif.success("Material de apoio removido com sucesso!"))
         }
     },

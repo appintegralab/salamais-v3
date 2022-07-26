@@ -16,7 +16,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
@@ -45,7 +45,7 @@ export default {
                 self.isFacilitador = self.salaTool.isFacilitador(self.userStore.user.id)
                 console.log("salaTool", salaTool);
 
-                onValue(ref(rdb, "/salamais/postagens/" + salaTool.urlID), (snap) => {
+                onValue(rdbref("postagens/" + salaTool.urlID), (snap) => {
                     self.postList = snap.val()
                     console.log("self.postList", self.postList);
                 })

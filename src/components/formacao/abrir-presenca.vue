@@ -54,9 +54,9 @@ export default {
         load() {
             let self = this
             if (this.formacao && this.encontro) {
-                let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+                let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
                 //console.log("path", path);
-                onValue(ref(rdb, path + "/presencaStatus"), (snap) => {
+                onValue(rdbref(path + "/presencaStatus"), (snap) => {
                     let status = snap.val()
                     if(status) {
                         self.status = status
@@ -88,9 +88,9 @@ export default {
             console.log("this.formacao", this.formacao);
             console.log("this.encontro", this.encontro);
 
-            let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+            let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
             console.log("path", path);
-            set(ref(rdb, path + "/presencaStatus"), "liberada")
+            set(ref(rdbref(path + "/presencaStatus"), "liberada")
             self.$q.notify(notif.success("Lista de presença aberta com sucesso!"))
 
         },
@@ -98,9 +98,9 @@ export default {
         fecharPresenca() {
             let self = this
             console.log("fecharPresenca");
-            let path = `/salamais/formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
+            let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
             console.log("path", path);
-            set(ref(rdb, path + "/presencaStatus"), "encerrada")
+            set(rdbref(path + "/presencaStatus"), "encerrada")
             self.$q.notify(notif.success("Lista de presença fechada com sucesso!"))
         }
     },

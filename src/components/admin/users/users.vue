@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -131,7 +131,7 @@ export default {
         load() {
             let self = this
 
-            onValue(ref(rdb, "/salamais/usuarios"), (snap) => {
+            onValue(rdbref("usuarios"), (snap) => {
                 self.rows = snapToArray(snap)
             })
         },
@@ -140,7 +140,7 @@ export default {
             let self = this
             this.removeDialog = false
             console.log(item);
-            set(ref(rdb, "/salamais/usuarios/" + item.id), null)
+            set(rdbref("usuarios/" + item.id), null)
             self.$q.notify(notif.success("Usuário excluido com sucesso"))
         }
     }

@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get } from "firebase/database"
 import notif from "../../../notif.js"
 import moment from 'moment/min/moment-with-locales'
@@ -153,7 +153,7 @@ export default {
     },
     mounted() {
         let self = this
-        get(ref(rdb, "/salamais/areas")).then((snap) => {
+        get(rdbref("areas")).then((snap) => {
             self.areas = snapToArray(snap)
         })
     },
@@ -248,7 +248,7 @@ export default {
             console.log(this.formData);
 
             //set(ref(rdb,"/anima/users/keys/"+this.formData.id),this.formData.id)
-            set(ref(rdb,"/salamais/usuarios/"+this.formData.id),this.formData)
+            set(rdbref("usuarios/"+this.formData.id),this.formData)
 
             this.$q.notify(notif.success("Usuário salvo com sucesso!"))
             self.dialog = false

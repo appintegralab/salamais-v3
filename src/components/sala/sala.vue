@@ -130,7 +130,7 @@
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { userStore } from "@/stores/user-store"
-import { db, rdb, snapToArray } from "@/firebase/firebase.js"
+import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 import notif from "@/notif.js"
 import badgearea from "@/components/utils/badge-area.vue"
@@ -175,22 +175,22 @@ export default {
             console.log("salaTool", salaTool);
         })
 
-        onValue(ref(rdb, "/salamais/formacoes/" + formacaoID), (snap) => {
+        onValue(rdbref("formacoes/" + formacaoID), (snap) => {
             //console.log(snap.val());
             self.formacao = snap.val()
             //self.sala = salaID
             self.encontro = self.formacao.encontros[encontroID]
             if (areaID != undefined && areaID != "") {
-                let path = `/salamais/formacoes/${formacaoID}/encontros/${encontroID}/areas/${areaID}/salas/${salaID}`
-                onValue(ref(rdb, path), (snap) => {
+                let path = `formacoes/${formacaoID}/encontros/${encontroID}/areas/${areaID}/salas/${salaID}`
+                onValue(rdbref(path), (snap) => {
                     console.log(snap.val());
                     self.sala = snap.val()
                     self.refresh++
                 })
             } else {
-                let path = `/salamais/formacoes/${formacaoID}/encontros/${encontroID}/salas/${salaID}`
+                let path = `formacoes/${formacaoID}/encontros/${encontroID}/salas/${salaID}`
                 console.log(path);
-                onValue(ref(rdb, path), (snap) => {
+                onValue(rdbref(path), (snap) => {
                     console.log(snap.val());
                     self.sala = snap.val()
                     self.refresh++
@@ -247,21 +247,21 @@ export default {
             if (this.salaTool.areaID != "") {
                 //inscricao na sala por área
                 let salaIDCtrl = parseInt(this.salaTool.salaID.substr(4, 1))
-                let path = `/salamais/formacoes/${formacao.id}/encontros/${encontro.id}/areas/${this.salaTool.areaID}/salas/sala${salaIDCtrl}/inscricoes/`
+                let path = `formacoes/${formacao.id}/encontros/${encontro.id}/areas/${this.salaTool.areaID}/salas/sala${salaIDCtrl}/inscricoes/`
                 console.log("path", path + user.id);
-                set(ref(rdb, path + user.id), user.id)
+                set(rdbref(path + user.id), user.id)
             } else {
                 //inscricao na sala comum
                 let salaIDCtrl = parseInt(this.salaTool.salaID.substr(4, 1))
-                let path = `/salamais/formacoes/${formacao.id}/encontros/${encontro.id}/salas/sala${salaIDCtrl}/inscricoes/`
+                let path = `formacoes/${formacao.id}/encontros/${encontro.id}/salas/sala${salaIDCtrl}/inscricoes/`
                 console.log("path", path + user.id);
-                set(ref(rdb, path + user.id), user.id)
+                set(rdbref(path + user.id), user.id)
             }
 
-            let path = `/salamais/inscricoes/`
+            let path = `inscricoes/`
             console.log("path", path + elem.id);
             // Adiciona inscrição
-            set(ref(rdb, path + elem.id), elem)
+            set(rdbref(path + elem.id), elem)
 
         },
 
@@ -270,7 +270,7 @@ export default {
             console.log("incluir10UsersTeste");
             console.log("this.salaTool", this.salaTool);
 
-            get(ref(rdb, "/salamais/usuarios/")).then((snap) => {
+            get(rdbref("usuarios/")).then((snap) => {
                 let users = snapToArray(snap)
                 console.log("users", users);
 

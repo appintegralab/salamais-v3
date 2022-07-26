@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, get, onValue, query, orderByChild, equalTo } from "firebase/database"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
@@ -84,13 +84,13 @@ export default {
 
         async load() {
             let self = this
-            let queryRef = query(ref(rdb, "/salamais/inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
+            let queryRef = query(rdbref("inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
             onValue(queryRef, (snap) => {
                 let inscricoes = snap.val()
                 console.log("inscricoes", inscricoes);
 
                 function pushCeritificado(path,inscricao) {
-                    get(ref(rdb,path)).then((snap) => {
+                    get(rdbref(path)).then((snap) => {
                         if (snap.val()) {
                             self.rows.push(inscricao)
                         }
@@ -104,7 +104,7 @@ export default {
                         let area = inscricoes[i].encontros[encontroID].area
                         let pathID = sala + ":" + inscricoes[i].formacaoID + ":" + encontroID + ":" + area
                         console.log("pathID", pathID);
-                        let path = "/salamais/listaPresenca/" + pathID + "/" + self.userStore.user.id
+                        let path = "listaPresenca/" + pathID + "/" + self.userStore.user.id
                         pushCeritificado(path,inscricoes[i])
                     }
                 }

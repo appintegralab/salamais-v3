@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import formedituser from "./form-edit-user.vue"
 import cargos from "./cargos.js"
@@ -130,7 +130,7 @@ export default {
     },
     mounted() {
         let self = this
-        get(ref(rdb, "/salamais/areas/")).then((snap) => {
+        get(rdbref("areas/")).then((snap) => {
             let data = snap.val()
             //console.log("areas",data);
             for(let i in data) {
