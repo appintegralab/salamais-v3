@@ -1,0 +1,79 @@
+<mjml>
+  <mj-head>
+    <mj-title>Inscrição realizada com sucesso</mj-title>
+    <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto:300,500"></mj-font>
+    <mj-font name="Raleway" href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"></mj-font>
+    <mj-attributes>
+      <mj-all font-family="Raleway, Roboto, Helvetica, sans-serif"></mj-all>
+      <mj-text font-weight="300" font-size="16px" color="#616161" line-height="16px"></mj-text>
+      <mj-section padding="0px"></mj-section>
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#e2e8f0">
+      <mj-column>
+        <mj-image align="center" width="180px" src="https://firebasestorage.googleapis.com/v0/b/appintegra-d8424.appspot.com/o/salamais%2Fsalamais-rect.png?alt=media&token=f7e29a07-1eb6-4db9-95aa-c801eee78299" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#ede9fe" padding-top="5px">
+      <mj-column padding-left="40px" padding-right="40px">
+        <mj-text align="center" font-size="20px" font-weight="600" color="#626262">
+          Olá ${nome}
+        </mj-text>
+        <mj-text align="center" color="#525252">
+          Agradecemos a sua inscrição no <strong>Sala Mais</strong>.
+        </mj-text>
+        <mj-text align="center" color="#525252">
+          Confira os dados da sua inscrição:
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ede9fe" padding-top="5px" padding-left="80px" padding-right="80px">
+      <mj-column border="1px solid #d4d4d4" padding-left="5px" padding-right="5px" padding-top="10px" padding-bottom="10px">
+        <mj-text align="left" font-size="14px" color="#525252" padding-bottom="2px" padding-top="2px">
+          <strong>Trilha:</strong> ${trilha}
+        </mj-text>
+        <mj-text align="left" font-size="14px" color="#525252" padding-bottom="0px" padding-top="0px">
+          <strong>Data:</strong> ${data}
+        </mj-text>
+        <mj-text align="left" font-size="14px" color="#525252" padding-bottom="0px" padding-top="0px">
+          <strong>Horário:</strong> ${horario}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ede9fe" padding-top="5px">
+      <mj-column padding-left="40px" padding-right="40px">
+        <mj-text font-size="14px" align="center" color="#525252">
+          Clique no link / botão abaixo para acessar informações da formação.
+        </mj-text>
+        <mj-text padding-top="0px" align="center" font-size="14px" color="#525252">
+          Neste link, você encontrará o acesso a sua sala na data do evento 
+          e os materiais que separamos para se preparar.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding-bottom="0px" background-color="#ede9fe" padding-top="5px">
+      <mj-column padding-bottom="0px" padding-left="40px" padding-right="40px">
+        <mj-button padding-bottom="0px" color="#000000" background-color="#ffffff" href="{{link}}">
+          {{link}}
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ede9fe" padding-top="5px" padding-bottom="0px">
+      <mj-column padding-top="0px" padding-left="40px" padding-right="40px">
+        <mj-button background-color="#5b21b6" href="{{link}}">
+          Ver informações da formação
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding-bottom="10px" background-color="#ede9fe" padding-top="0px">
+      <mj-column padding-top="0px" padding-left="40px" padding-right="40px">
+        <mj-text font-size="14px" align="center" color="#525252">
+          Até breve!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

@@ -1,0 +1,20 @@
+{
+    "id": {
+        "type": "String",
+        "unique": true,
+        "required": true,
+        "dropDups": true
+    },
+    "nome": {
+        "type": "String"
+    },
+    "icon": {
+        "type": "String"
+    },
+    "sigla": {
+        "type": "String"
+    },
+    "cor": {
+        "type": "String"
+    }
+}

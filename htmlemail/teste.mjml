@@ -1,0 +1,154 @@
+<mjml>
+  <mj-head>
+    <mj-title>Hello world</mj-title>
+    <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto:300,500"></mj-font>
+    <mj-attributes>
+      <mj-all font-family="Roboto, Helvetica, sans-serif"></mj-all>
+      <mj-text font-weight="300" font-size="16px" color="#616161" line-height="24px"></mj-text>
+      <mj-section padding="0px"></mj-section>
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#f0f0f0">
+      <mj-column>
+        <mj-text align="center" font-style="italic" font-size="20px" color="#626262">
+          My Company
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-url="https://1.bp.blogspot.com/-TPrfhxbYpDY/Uh3Refzk02I/AAAAAAAALw8/5sUJ0UUGYuw/s1600/New+York+in+The+1960's+-+70's+(2).jpg" background-size="cover" background-repeat="no-repeat">
+
+      <mj-column width="600px">
+        <mj-text align="center" color="#fff" font-size="40px" font-family="Helvetica Neue">
+          Slogan here
+        </mj-text>
+
+        <mj-button background-color="#F63A4D" href="#">
+          Promotion
+        </mj-button>
+
+      </mj-column>
+
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column width="400px">
+
+        <mj-text font-style="italic" font-size="20px" font-family="Helvetica Neue" color="#626262">My Awesome Text</mj-text>
+
+        <mj-text color="#525252">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rutrum enim eget magna efficitur, eu semper augue semper. Aliquam erat volutpat. Cras id dui lectus. Vestibulum sed finibus lectus, sit amet suscipit nibh. Proin nec commodo purus. Sed eget nulla elit. Nulla aliquet mollis faucibus.
+        </mj-text>
+
+        <mj-button background-color="#F45E43" href="#">Learn more</mj-button>
+
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fbfbfb">
+      <mj-column>
+        <mj-image width="100px" src="https://191n.mj.am/img/191n/3s/x0l.png" />
+      </mj-column>
+      <mj-column>
+        <mj-image width="100px" src="https://191n.mj.am/img/191n/3s/x01.png" />
+      </mj-column>
+      <mj-column>
+        <mj-image width="100px" src="https://191n.mj.am/img/191n/3s/x0s.png" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="20px 0">
+      <mj-column width="60%">
+        <mj-text font-size="10px">Your bimonthly intake of AI, machine learning and bots is here!</mj-text>
+      </mj-column>
+      <mj-column width="40%">
+        <mj-text align="right">[[PERMALINK]]</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image width="137px" height="185px" padding="0" src="https://mjml.io/assets/img/easy-and-quick.png" />
+        <mj-text align="center">
+          <h2>Easy and quick</h2>
+          <p>Write less code, save time and code more efficiently with MJML’s semantic syntax.</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-button font-family="Helvetica" background-color="#f45e43" color="white">
+          Don't click me!
+        </mj-button>
+      </mj-column>
+      <mj-column>
+        <mj-button font-family="Helvetica" background-color="#cccccc" color="white">
+          Don't click me!
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-social font-size="15px" icon-size="30px" mode="horizontal">
+          <mj-social-element name="facebook" href="https://mjml.io/">
+            Facebook
+          </mj-social-element>
+          <mj-social-element name="google" href="https://mjml.io/">
+            Google
+          </mj-social-element>
+          <mj-social-element name="twitter" href="https://mjml.io/">
+            Twitter
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column width="100%">
+        <mj-image href="https://recast.ai?ref=newsletter" src="https://cdn.recast.ai/newsletter/city-01.png"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column width="100%">
+        <mj-text align="center">Your bimonthly intake of AI, machine learning and bots is here!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column width="45%">
+        <mj-text align="center" font-weight="500" padding="0px" font-size="18px">ISSUE #18 - DECEMBER</mj-text>
+        <mj-divider border-width="2px" border-color="#616161"></mj-divider>
+        <mj-divider border-width="2px" border-color="#616161" width="45%"></mj-divider>
+      </mj-column>
+    </mj-section>
+    <mj-section padding-top="30px">
+      <mj-column width="100%">
+        <mj-text>
+          <p>Hello hello!</p>
+          <p> Don't panic. This is still the same newsletter, I'm still me. We just updated the design to make it sleeker and easier to read! </p>
+          <p>Without further ado, let's dive into AI for medecine, sound recognition models and bot building!</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column width="11%">
+        <mj-image padding-right="0px" padding-left="25px" align="left" width="70px" href="https://twitter.com/MrJustaine" src="https://cdn.recast.ai/newsletter/justine.png"></mj-image>
+      </mj-column>
+      <mj-column width="89%">
+        <mj-text padding="0 25px">
+          <p style="color:#BDBDBD; line-height: 9px"> Justine - <a href="https://recast.ai?ref=newsletter" style="color: #3498DB;">
+              Recast.AI
+            </a> team </p>
+          <p style="font-style: italic; color:#BDBDBD; line-height: 9px"> Your light in the storm </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column width="100%">
+        <mj-divider border-width="1px" border-color="#E0E0E0"></mj-divider>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-image align="center" width="150px" href="https://recast.ai?ref=newsletter" src="https://cdn.recast.ai/newsletter/recast-ai-01.png"></mj-image>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
