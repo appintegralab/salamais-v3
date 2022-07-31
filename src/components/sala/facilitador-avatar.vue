@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, get } from "firebase/database"
 
 export default {

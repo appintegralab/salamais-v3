@@ -42,6 +42,9 @@
                                 <div class="ml-1">
                                     <span class="text-[7pt]">{{ props.row.nome }}</span>
                                 </div>
+                                <div class="ml-1 flex-1">
+                                    <facilitadorStats :formacoes="props.row.formacoes"/>
+                                </div>
                             </div>
                         </q-td>
                     </q-tr>
@@ -58,8 +61,10 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { userStore } from "../../../stores/user-store"
 import notif from "../../../notif.js"
+import facilitadorStats from "./facilitador-stats.vue"
 
 export default {
+    components: { facilitadorStats },
     data() {
         return {
             filter: "",
@@ -83,25 +88,101 @@ export default {
     },
     methods: {
 
-        pushUser(userID) {
+        async getUser(userID) {
             let self = this
             //console.log("pushUser",userID);
-            get(rdbref("usuarios/" + userID)).then((snap) => {
-                let user = snap.val()
-                console.log("user", user);
-                self.rows.push(user)
-            })
+            let snap = await get(rdbref("usuarios/" + userID))
+            let user = snap.val()
+            console.log("user", user);
+            return user
+        },
+
+        pushFacilitador(facilitadores, formacao, encontro, sala, keyArea) {
+            if (sala.facilitadores != undefined) {
+                for (let key in sala.facilitadores) {
+                    if (facilitadores[key] == undefined) {
+                        facilitadores[key] = {
+                            formacoes: {}
+                        }
+                    }
+                    console.log("facilitadores", facilitadores);
+                    if (facilitadores[key].formacoes[formacao.id] == undefined) {
+                        facilitadores[key].formacoes[formacao.id] = {
+                            id: formacao.id,
+                            encontros: {},
+                            nome: formacao.nome,
+                            dataInicio: formacao.dataInicio,
+                            dataTermino: formacao.dataTermino,
+                        }
+                    }
+                    if (facilitadores[key].formacoes[formacao.id].encontros[encontro.id] == undefined) {
+                        facilitadores[key].formacoes[formacao.id].encontros[encontro.id] = {
+                            id: encontro.id,
+                            salas: {},
+                            data: encontro.data,
+                            horaInicio: encontro.horaInicio,
+                            horaTermino: encontro.horaTermino
+                        }
+                    }
+                    if (facilitadores[key].formacoes[formacao.id].encontros[encontro.id].salas[sala.id] == undefined) {
+                        let item = {
+                            id: sala.id,
+                            link: sala.link
+                        }
+                        if (formacao.turmasPorArea) {
+                            item.area = keyArea
+                        }
+                        facilitadores[key].formacoes[formacao.id].encontros[encontro.id].salas[sala.id] = item
+                    }
+                }
+            }
         },
 
         load() {
             let self = this
-            onValue(rdbref("/facilitadores"), (snap) => {
-                let facilitadores = snap.val()
-                console.log("facilitadores", facilitadores);
-                for (let key in facilitadores) {
-                    self.pushUser(key)
+
+            onValue(rdbref("/formacoes"), async (snap) => {
+                let formacoes = snap.val()
+                console.log("formacoes", formacoes);
+                let facilitadores = {}
+                for (let keyForm in formacoes) {
+                    let formacao = formacoes[keyForm]
+                    let encontros = formacao.encontros
+                    for (let keyEnc in encontros) {
+                        if (formacao.turmasPorArea) {
+                            for (let keyArea in encontros[keyEnc].areas) {
+                                let salas = encontros[keyEnc].areas[keyArea].salas
+                                for (let keySala in salas) {
+                                    self.pushFacilitador(facilitadores, formacao, encontros[keyEnc], salas[keySala], keyArea)
+                                }
+                            }
+                        } else {
+                            let salas = encontros[keyEnc].salas
+                            for (let keySala in salas) {
+                                self.pushFacilitador(facilitadores, formacao, encontros[keyEnc], salas[keySala])
+                            }
+                        }
+
+
+                    }
                 }
-            })
+
+                for(let key in facilitadores) {
+                    let user = await self.getUser(key)
+                    facilitadores[key].nome = user.nome
+                    facilitadores[key].urlFoto = user.urlFoto
+                    self.rows.push(facilitadores[key])
+                }
+                console.log("facilitadores", facilitadores);
+            });
+
+            //            onValue(rdbref("/facilitadores"), (snap) => {
+            //                let facilitadores = snap.val()
+            //                console.log("facilitadores", facilitadores);
+            //                for (let key in facilitadores) {
+            //                    self.pushUser(key)
+            //                }
+            //            })
         },
 
 

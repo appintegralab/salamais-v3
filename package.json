@@ -21,6 +21,7 @@
     "moment": "^2.29.3",
     "pdfjs-dist": "^2.14.305",
     "pinia": "^2.0.13",
+    "qr-code-styling": "^1.6.0-rc.1",
     "quasar": "^2.7.3",
     "vee-validate": "^4.6.2",
     "vue": "^3.2.33",

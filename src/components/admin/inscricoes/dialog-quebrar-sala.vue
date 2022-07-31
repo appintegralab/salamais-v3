@@ -110,10 +110,24 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="flex-1" v-if="Object.keys(salas).length > 1">
+                            <div class="flex justify-end">
+                                <q-btn size="xs" class="px-2 mr-1" @click="fecharSala(index)">
+                                    <i class="iconify text-sm text-red-800" data-icon="mdi:close-circle-outline"
+                                        data-inline="false"></i>
+                                    <span class="ml-1">fechar</span>
+                                </q-btn>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="my-2 text-center flex justify-end mr-2">
+                <q-btn v-if="Object.keys(salas).length > 1" :loading="loading" @click="equilibrarSalas"
+                    class="flex items-center mr-3" size="sm" outline color="blue-grey-8">
+                    <span class="iconify mr-1 text-[13pt]" data-icon="uil:social-distancing" data-inline="false"></span>
+                    <span class="mt-[2px]">Equilibrar salas</span>
+                </q-btn>
                 <q-btn :loading="loading" @click="abrirNovaSala" class="flex items-center" size="sm" outline
                     color="blue-grey-8">
                     <span class="iconify mr-1 text-[11pt]" data-icon="ic:save"></span>
@@ -155,7 +169,7 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import selecionaruser from "./selecionar-user.vue"
 import notif from "../../../notif.js"
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, set, get, query, orderByChild, equalTo } from "firebase/database"
 import facilitadorinfo from "./facilitador-info.vue"
 
@@ -243,7 +257,13 @@ export default {
                         }
                     } else {
                         if (key == this.encontro.id) {
-                            todosInscritosKey[data[i].userID].inscricaoID = i
+                            if (todosInscritosKey[data[i].userID] == undefined) {
+                                console.log('erro');
+                                console.log({ i, 'data[i]': data[i] });
+                                console.log('todosInscritosKey[data[i].userID]', todosInscritosKey[data[i].userID]);
+                            } else {
+                                todosInscritosKey[data[i].userID].inscricaoID = i
+                            }
                         }
                     }
                 }
@@ -331,9 +351,9 @@ export default {
         salvar() {
             let self = this
             console.log("this.salas", this.salas);
-            console.log("this.encontro",this.encontro);
-            console.log("this.formacao",this.formacao);
-            console.log("this.userInscricaoID",this.userInscricaoID);
+            console.log("this.encontro", this.encontro);
+            console.log("this.formacao", this.formacao);
+            console.log("this.userInscricaoID", this.userInscricaoID);
 
             if (this.formacao.turmasPorArea) {
                 console.log("area", this.area);
@@ -353,7 +373,7 @@ export default {
                     let salaID = parseInt(key.substring(4))
                     for (let i in this.salas[key].inscricoes) {
                         let userID = this.salas[key].inscricoes[i]
-                        console.log("userID",userID);
+                        console.log("userID", userID);
                         let path = "inscricoes/" + this.userInscricaoID[userID].inscricaoID
                         path = path + "/encontros/" + this.encontro.id
                         console.log(path + "/sala", salaID);
@@ -370,7 +390,7 @@ export default {
                 console.log(pathEncontro + "/salas", this.salas);
                 set(rdbref(pathEncontro + "/salaIDCtrl"), this.encontro.salaIDCtrl);
                 set(rdbref(pathEncontro + "/salas"), this.salas);
-                
+
 
                 for (let key in this.salas) {
                     let salaID = parseInt(key.substring(4))
@@ -388,6 +408,65 @@ export default {
             this.removeDialog = false
             self.dialog = false
             self.$emit('salaUpdate')
+        },
+
+        fecharSala(index) {
+            let self = this
+            self.loading = true
+            console.log(index);
+            let salas = JSON.parse(JSON.stringify(this.salas))
+            console.log(salas);
+            let salaRem = salas[index]
+            let salas2 = {}
+            let idx = 1
+            for (let key in salas) {
+                if (key != index) {
+                    salas2["sala" + idx] = salas[key]
+                    salas2["sala" + idx].id = "sala" + idx
+                    idx++
+                }
+            }
+            console.log("salas2", salas2);
+            console.log("salaRem", salaRem);
+            idx = 1
+            let qtdeSalas = Object.keys(salas2).length
+            for (let key in salaRem.inscricoes) {
+                if (idx > qtdeSalas) {
+                    idx = 1
+                }
+                let prof = salaRem.inscricoes[key]
+                console.log("salas2[sala" + idx + "]", prof);
+                salas2["sala" + idx].inscricoes[prof] = prof
+                idx++
+            }
+            console.log("salas2", salas2);
+            this.salas = salas2
+            if (this.formacao.turmasPorArea) {
+                this.encontro.areas[this.area.id].salaIDCtrl--
+            } else {
+                console.log("não tem área");
+                this.encontro.salaIDCtrl--
+            }
+            self.loading = false
+            self.confirmarDisabled = false
+        },
+
+        async equilibrarSalas() {
+            let self = this
+            console.log("equilibrarSalas");
+            if (this.formacao.turmasPorArea) {
+                console.log("area", this.area);
+                let salaIDCtrl = this.encontro.areas[this.area.id].salaIDCtrl
+                this.userInscricaoID = await this.quebraSalas(salaIDCtrl)
+            } else {
+                console.log("não tem área");
+                let salaIDCtrl = this.encontro.salaIDCtrl
+                this.userInscricaoID = await this.quebraSalas(salaIDCtrl)
+            }
+            console.log("this.userInscricaoID", this.userInscricaoID);
+            console.log("this.salas", this.salas);
+            self.loading = false
+            self.confirmarDisabled = false
         }
 
     },

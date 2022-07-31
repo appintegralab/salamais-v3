@@ -159,6 +159,11 @@ export default {
             let path = "listaPresenca/" + presencaID + "/" + this.userStore.user.id
             console.log("presencaID path", path);
             set(rdbref(path), this.userStore.user.id)
+
+            path = "listaPresencaByUsers/" + this.userStore.user.id + "/" + presencaID 
+            console.log("path", path);
+            set(rdbref(path), presencaID)
+
             self.$q.notify(notif.success("Sua presença foi registrada com sucesso!"))
         },
 

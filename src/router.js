@@ -18,6 +18,7 @@ const routes = [
     { path: '/sala/:id', component: () => import("@/components/sala/sala.vue") },
     { path: '/admin-tmpl-certificados', component: () => import("@/components/admin/tmpl-certificados/tmpl-certificados.vue") },
     { path: '/form-teste', component: () => import("@/components/admin/tmpl-certificados/form-teste.vue") },
+    { path: '/qrcode-lab', component: () => import("@/components/admin/tmpl-certificados/qrcode/qrcode-lab.vue") },
 ]
 
 const router = createRouter({

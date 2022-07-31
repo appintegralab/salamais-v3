@@ -84,20 +84,31 @@ export default {
 
         async load() {
             let self = this
-            self.rows = []
-            let snap = await get(rdbref("/listaPresencaByUsers/" + this.userStore.user.id))
-            let data = snapToArray(snap)
-            console.log("data", data)
-            for(let i in data) {
-                let [salaID, formacaoID, encontroID, areaID] = data[i].split(":")
-                console.log({salaID, formacaoID, encontroID, areaID});
-                let snap = await get(rdbref("/formacoes/" + formacaoID + "/nome"))
-                let nome = snap.val()
-                snap = await get(rdbref("/formacoes/" + formacaoID + "/encontros/"+encontroID))
-                let encontro = snap.val()
-                console.log("nome",nome);
-                console.log("encontro",encontro);
-            }
+            let queryRef = query(rdbref("inscricoes"), orderByChild('userID'), equalTo(this.userStore.user.id))
+            onValue(queryRef, (snap) => {
+                let inscricoes = snap.val()
+                console.log("inscricoes", inscricoes);
+
+                function pushCeritificado(path,inscricao) {
+                    get(rdbref(path)).then((snap) => {
+                        if (snap.val()) {
+                            self.rows.push(inscricao)
+                        }
+                    })
+                }
+
+                self.rows = []
+                for (let i in inscricoes) {
+                    for (let encontroID in inscricoes[i].encontros) {
+                        let sala = "sala" + inscricoes[i].encontros[encontroID].sala
+                        let area = inscricoes[i].encontros[encontroID].area
+                        let pathID = sala + ":" + inscricoes[i].formacaoID + ":" + encontroID + ":" + area
+                        console.log("pathID", pathID);
+                        let path = "listaPresenca/" + pathID + "/" + self.userStore.user.id
+                        pushCeritificado(path,inscricoes[i])
+                    }
+                }
+            });
         },
 
     },

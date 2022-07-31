@@ -14,7 +14,7 @@
 <script>
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
-import { rdb } from "@/firebase/firebase.js"
+import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
@@ -90,7 +90,7 @@ export default {
 
             let path = `formacoes/${this.formacao.id}/encontros/${this.encontro.id}`
             console.log("path", path);
-            set(ref(rdbref(path + "/presencaStatus"), "liberada")
+            set(rdbref(path + "/presencaStatus"), "liberada")
             self.$q.notify(notif.success("Lista de presença aberta com sucesso!"))
 
         },
