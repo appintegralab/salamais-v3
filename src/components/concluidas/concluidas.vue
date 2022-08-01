@@ -2,7 +2,7 @@
     <div>
         <div class="flex items-center mx-4 my-1 pt-2 fw-500">
             <div class="h-[20px] fs-12pt mr-1">
-                <span class="iconify" data-icon="mdi:school" data-inline="false"></span>
+                <span class="iconify" data-icon="ph:book-bookmark-duotone" data-inline="false"></span>
             </div>
             <div>
                 Meus certificados emitidos
@@ -31,11 +31,64 @@
                         <q-td>
                             <div class="flex items-center">
                                 <div>
-                                    <span class="iconify text-[12pt]" data-icon="mdi:school"></span>
+                                    <span class="iconify text-base" data-icon="ph:book-bookmark-duotone"></span>
                                 </div>
-                                <div class="ml-2 w-[160px]">
-                                    <div class="text-[5pt] leading-3 fw-600">
-                                        Formação
+                                <div class="ml-2">
+                                    <div class="flex-1 leading-3">
+                                        <div class="pt-0 m-0 fw-200 text-xs">
+                                            Formação
+                                            <span
+                                                class="ml-1 text-[7pt] fw-500 pl-[1px] pt-[2px] rounded text-green-700 bg-slate-200">
+                                                {{ moment(props.row.formacao.dataInicio).format("DD/MM/YYYY") }}
+                                                <span class="text-[6pt]">
+                                                    ({{
+                                                            moment(props.row.formacao.dataInicio).locale('pt-br').format('ddd').toUpperCase()
+                                                    }})
+                                                </span>
+                                            </span>
+
+                                        </div>
+                                        <div class="mt-0 leading-5 text-xs font-medium">
+                                            {{ props.row.formacao.nome }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ml-2">
+                                    <div class="flex-1 leading-3">
+                                        <div class="pt-0 m-0 fw-200 text-xs">
+                                            Trilha
+                                            <div class="flex">
+                                                <div>
+                                                    <span
+                                                        class="text-[9pt] fw-500 px-1 rounded text-slate-700 bg-slate-100">
+                                                        {{ moment(props.row.encontro.data).format("DD/MM/YYYY") }}
+                                                    </span>
+                                                    <span class="ml-1 text-[9pt] fw-300">
+                                                        ({{
+                                                                moment(props.row.encontro.data).locale('pt-br').format('dddd').split("-")[0]
+                                                        }})
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="ml-1 text-[9pt] fw-200">Horário:</span>
+                                                    <span class="px-1 rounded text-[9pt] fw-500 text-slate-900">
+                                                        {{ props.row.encontro.horaInicio }} às {{
+                                                                props.row.encontro.horaTermino
+                                                        }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="border rounded px-1 bg-gray-200 font-medium">
+                                                        {{ props.row.encontro.salaID }}
+                                                    </span>
+                                                    <badgearea :sigla="props.row.encontro.areaID" />
+                                                    <q-btn @click="verCertificado(props.row)"
+                                                        class="ml-1 px-1 py-1 leading-3" size="5px" outline>
+                                                        <span class="text-[5pt]">ver certificado</span>
+                                                    </q-btn>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -54,9 +107,14 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { userStore } from "@/stores/user-store"
 import notif from "@/notif.js"
+import getFields from "@/firebase/getFields.js"
+import badgearea from "@/components/utils/badge-area.vue"
+import buildCertificado from "@/components/admin/tmpl-certificados/buildCertificado.js"
+
+window.moment = moment
 
 export default {
-    components: {},
+    components: { badgearea },
     props: {},
     data() {
         return {
@@ -65,7 +123,7 @@ export default {
             userStore: userStore(),
             filter: "",
             columns: [
-                { label: 'Formações concluídas', field: "nome", align: 'left', sortable: true },
+                { label: 'Certificados', field: "nome", align: 'left', sortable: true },
                 { label: '', sortable: false },
             ],
             rows: [],
@@ -88,18 +146,55 @@ export default {
             let snap = await get(rdbref("/listaPresencaByUsers/" + this.userStore.user.id))
             let data = snapToArray(snap)
             console.log("data", data)
-            for(let i in data) {
+            for (let i in data) {
                 let [salaID, formacaoID, encontroID, areaID] = data[i].split(":")
-                console.log({salaID, formacaoID, encontroID, areaID});
-                let snap = await get(rdbref("/formacoes/" + formacaoID + "/nome"))
-                let nome = snap.val()
-                snap = await get(rdbref("/formacoes/" + formacaoID + "/encontros/"+encontroID))
-                let encontro = snap.val()
-                console.log("nome",nome);
-                console.log("encontro",encontro);
+                console.log({ salaID, formacaoID, encontroID, areaID });
+                let ret = await getFields("/formacoes/" + formacaoID, ["nome", "descr", "dataInicio", "dataTermino", "horasAtividade"])
+                let item = {
+                    nome: ret.nome,
+                    formacao: { id: formacaoID, ...ret }
+                }
+                let path = "/formacoes/" + formacaoID + "/encontros/" + encontroID
+                ret = await getFields(path, ["data", "horaInicio", "horaTermino"])
+                item.encontro = {
+                    id: encontroID,
+                    salaID, areaID,
+                    ...ret
+                }
+                self.rows.push(item)
             }
+            console.log("self.rows", self.rows);
         },
 
+        verCertificado(item) {
+            console.log("verCertificado", item);
+            let data = {
+                nome: this.userStore.user.nome,
+                nomeTrilha: item.nome,
+                dataTrilha: moment(item.encontro.data).format("DD/MM/YYYY"),
+                ch: item.formacao.horasAtividade
+            }
+            if (item.encontro.areaID != '') {
+                let hora = item.encontro.horaInicio.split(":")[0]
+                let periodo = "matutino"
+                if (hora >= 12 && hora < 18) {
+                    periodo = "vespertino"
+                }
+                if (hora >= 18 && hora < 24) {
+                    periodo = "noturno"
+                }
+                data.periodo = periodo
+                get(rdbref("/areas/" + item.encontro.areaID)).then((snap) => {
+                    let area = snap.val()
+                    data.area = area.nome
+                    console.log("data", data);
+                    buildCertificado("CERT-MOD-e1a0", data)
+                })
+            } else {
+                console.log("data", data);
+                buildCertificado("CERT-MOD-eff9", data)
+            }
+        }
     },
 }
 </script>

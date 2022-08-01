@@ -25,7 +25,7 @@
                             <q-menu v-model="menuShow" anchor="bottom left" self="center right">
                                 <div class="p-1">
                                     <div class="my-[2px] cursor-pointer hover:bg-gray-200">
-                                        <div @click="menuShow = false;"
+                                        <div @click="menuShow = false; editar()"
                                             class="flex items-center rounded py-1 px-2">
                                             <div class="">
                                                 <span class="text-[9pt]">Editar</span>
@@ -33,7 +33,7 @@
                                         </div>
                                     </div>
                                     <div class="my-[2px] cursor-pointer hover:bg-gray-200">
-                                        <div @click="menuShow = false;"
+                                        <div @click="menuShow = false; excluir()"
                                             class="flex items-center rounded py-1 px-2">
                                             <div class="">
                                                 <span class="text-[9pt]">Excluir</span>
@@ -65,7 +65,7 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { rdb, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
-import notif from "@/notif.js"
+import notify from "@/components/utils/notify"
 import { userStore } from "@/stores/user-store"
 import btnLike from './btn-like.vue'
 
@@ -105,6 +105,32 @@ export default {
                 self.user = snap.val()
             })
         },
+
+        excluir() {
+            console.log("excluir",this.post);
+            let params = this.$route.params.id
+            console.log("params",params);
+            let ret = confirm("Deseja realmente excluir o post?")
+            if(ret) {
+                console.log("sim");
+                console.log("/postagens/"+params+"/"+this.post.id);
+                set(rdbref("/postagens/"+params+"/"+this.post.id),null)
+                notify.success("Post removido com sucesso!")
+            }
+        },
+
+        editar() {
+            console.log("editar",this.post);
+            let params = this.$route.params.id
+            console.log("params",params);
+            let ret = prompt("Edite o texto da postagem",this.post.mensagem)
+            if(ret) {
+                console.log("sim",ret);
+                console.log("/postagens/"+params+"/"+this.post.id+"/mensagem");
+                set(rdbref("/postagens/"+params+"/"+this.post.id+"/mensagem"),ret)
+                notify.success("Post editado com sucesso!")
+            }
+        }
     },
 }
 </script>

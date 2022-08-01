@@ -21,8 +21,8 @@
                 </div>
                 <hr class="mb-1">
                 <div class="fw-600 text-[8pt]">
-                    <span class="ml-1 rounded bg-slate-200">
-                        <q-btn size="7px" round color="blue-grey-1">
+                    <span class="flex ml-1 rounded bg-slate-200">
+                        <q-btn size="7px" round color="blue-grey-1" @click="copiarLink(sala.link)">
                             <span class="iconify text-[9pt] text-slate-800" data-icon="ion:link"></span>
                             <q-tooltip :delay="600">
                                 Copiar link
@@ -31,9 +31,9 @@
                         <span class="text-[9pt] py-2 text-red-800 pr-1 ml-1 fw-400 fmohave" v-if="sala.link == ''">
                             link não informado
                         </span>
-                        <span class="text-[9pt] pr-1 ml-1 fw-400 froboto" v-if="sala.link != ''">
-                            {{ sala.link }}
-                        </span>
+                        <div class="flex-1 text-[9pt] pr-1 ml-1 fw-400 froboto truncate" v-if="sala.link != ''">
+                            <a :href="sala.link" target="_blank">{{ sala.link }}</a>
+                        </div>
                     </span>
                 </div>
             </div>
@@ -59,7 +59,7 @@ import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { rdb } from "@/firebase/firebase.js"
 import { ref, onValue, set } from "firebase/database"
-import notif from "@/notif.js"
+import notify from "@/components/utils/notify"
 import { userStore } from "@/stores/user-store"
 import presenca from "./presenca.vue"
 import mural from "./mural/mural.vue"
@@ -95,6 +95,12 @@ export default {
                 self.isFacilitador = self.salaTool.isFacilitador(self.userStore.user.id)
                 console.log("salaTool", salaTool);
             })
+        },
+
+        copiarLink(link) {
+            console.log("copiarLink",link);
+            navigator.clipboard.writeText(link)
+            notify.success("link copiado com sucesso")
         }
     },
 }

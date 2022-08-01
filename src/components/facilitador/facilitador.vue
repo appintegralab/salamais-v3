@@ -39,53 +39,53 @@
                                 <div>
                                     <span class="iconify text-[12pt]" data-icon="mdi:school"></span>
                                 </div>
-                                <div class="ml-2 w-[160px]">
-                                    <div class="text-[5pt] leading-3 fw-600">
+                                <div class="ml-2 w-[280px]">
+                                    <div class="text-xs leading-3 font-extralight">
                                         Formação
                                     </div>
-                                    <div class="text-[6pt] leading-3 truncate">
+                                    <div class="text-xs leading-3 truncate font-medium">
                                         <router-link :to="{ path: '/formacao/' + props.row.formacao.id }"
                                             target="_blank">
-                                            <span class="text-[7pt]">{{ props.row.formacao.nome }}</span>
+                                            <span class="text-xs">{{ props.row.formacao.nome }}</span>
                                         </router-link>
                                         <q-tooltip :delay="800">
                                             {{ props.row.formacao.nome }}
                                         </q-tooltip>
                                     </div>
                                 </div>
-                                <div class="ml-2 w-[130px] leading-3 pt-2">
+                                <div class="ml-2 w-[140px] leading-3 pt-2">
                                     <div class="text-[6pt] leading-3">
-                                        <span class="text-[7pt] fw-500 px-1 rounded text-slate-700 bg-slate-200">
+                                        <span class="text-xs fw-500 px-1 rounded text-slate-700 bg-slate-200">
                                             {{ moment(props.row.encontro.data).format("DD/MM/YYYY") }}
                                         </span>
-                                        <span class="text-[8pt] fw-300">
+                                        <span class="text-xs fw-300">
                                             ({{
                                                     moment(props.row.encontro.data).locale('pt-br').format('dddd').split("-")[0]
                                             }})
                                         </span>
                                     </div>
                                     <div>
-                                        <span class="ml-1 fw-300 text-[6pt]">Horário:</span>
-                                        <span class="px-1 rounded text-[7pt] fw-500 text-slate-900">
+                                        <span class="ml-1 fw-300 text-xs">Horário:</span>
+                                        <span class="px-1 rounded text-xs fw-500 text-slate-900">
                                             {{ props.row.encontro.horaInicio }} às {{ props.row.encontro.horaTermino }}
                                         </span>
                                     </div>
                                 </div>
                                 <div class="pt-1 pb-1 px-1 border shadow rounded">
                                     <div class="flex items-center leading-3">
-                                        <span class="px-1 text-[7pt] rounded bg-slate-200">
-                                            Sala {{ props.row.id }}
+                                        <span class="px-1 text-xs rounded bg-slate-200">
+                                            {{ props.row.id }}
                                         </span>
                                         <div class="flex pl-[3px] px-1 py-1 leading-3 border ml-1 rounded">
                                             <div v-if="props.row.inscricoes != undefined"
-                                                class="text-[8pt] fw-600 py-0 text-center">
+                                                class="text-xs fw-600 py-0 text-center">
                                                 {{ Object.keys(props.row.inscricoes).length }}
                                             </div>
                                             <div v-if="props.row.inscricoes == undefined"
-                                                class="text-[8pt] fw-600 py-0 text-center">
+                                                class="text-xs fw-600 py-0 text-center">
                                                 0
                                             </div>
-                                            <div class="ml-1 fw-300 flato text-[7pt] py-0">
+                                            <div class="ml-1 fw-300 flato text-xs py-0">
                                                 inscrições
                                             </div>
                                         </div>

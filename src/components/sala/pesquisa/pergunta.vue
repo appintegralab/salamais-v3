@@ -17,7 +17,7 @@
                     Escreva seu comentário / sugestão
                 </div>
                 <div class="m-1 p-2">
-                    <textarea class="w-full border rounded p-1" name="" id="" rows="4" placeholder="Digite seu comentário"></textarea>
+                    <textarea v-model="respAberta" class="w-full border rounded p-1" name="" id="" rows="4" placeholder="Digite seu comentário"></textarea>
                 </div>
             </div>
             <hr class="mb-2">
@@ -25,10 +25,10 @@
                 <q-btn size="sm" @click="$emit('prev')">
                     voltar
                 </q-btn>
-                <q-btn v-if="!end" size="sm" class="ml-4" color="purple-9" @click="$emit('next')">
+                <q-btn v-if="!end" size="sm" class="ml-4" color="purple-9" @click="$emit('resposta',{pergunta, resp, respAberta}); $emit('next')">
                     próximo
                 </q-btn>
-                <q-btn v-if="end" size="sm" class="ml-4" color="purple-9" @click="$emit('next')">
+                <q-btn v-if="end" size="sm" class="ml-4" color="purple-9" @click="$emit('resposta',{pergunta, resp, respAberta}); $emit('next')">
                     concluir avaliação
                 </q-btn>
             </div>
@@ -44,6 +44,7 @@ export default {
     data() {
         return {
             resp: 0,
+            respAberta: "",
             arrayMarkerLabel: [
                 { value: 0, label: 'Discordo' },
                 { value: 1, label: '1' },

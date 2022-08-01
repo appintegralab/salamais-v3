@@ -41,14 +41,18 @@
                         <q-avatar class="bg-slate-300">
                             <span class="iconify text-green-900 text-[26pt]" data-icon="mdi:certificate-outline"></span>
                         </q-avatar>
-                        <div class="mx-6">
+                        <div class="mx-2">
                             <div class="text-center rounded bg-slate-200 text-green-900 fw-500 px-2 pt-[2px]">
                                 Presença registrada!
                             </div>
-                            <div class="mt-2 ml-2 text-center">
-                                <q-btn @click="verCertificado" size="xs" outline class="text-black">
+                            <div class="flex mt-2 text-center">
+                                <q-btn @click="verCertificado" size="xs" outline class="text-black px-1">
                                     <span class="iconify text-[13pt]" data-icon="mdi:certificate-outline"></span>
-                                    <span class="ml-2">ver certificado</span>
+                                    <span class="ml-1">certificado</span>
+                                </q-btn>
+                                <q-btn v-if="!pesquisaDone" @click="$refs.pesquisaDialogRef.show()" size="xs" outline class="text-black px-1 ml-2">
+                                    <span class="iconify text-[11pt]" data-icon="mdi:chat-question-outline"></span>
+                                    <span class="ml-1">pesquisa</span>
                                 </q-btn>
                             </div>
                         </div>
@@ -56,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <pesquisaDialog ref="pesquisaDialogRef"/>
+        <pesquisaDialog ref="pesquisaDialogRef" />
     </div>
 </template>
 
@@ -64,11 +68,12 @@
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { rdb, rdbref } from "@/firebase/firebase.js"
-import { ref, onValue, set } from "firebase/database"
+import { ref, onValue, set, get } from "firebase/database"
 import notif from "@/notif.js"
 import { userStore } from "@/stores/user-store"
 import { jsPDF } from "jspdf"
 import pesquisaDialog from "./pesquisa/dialog.vue"
+import buildCertificado from "@/components/admin/tmpl-certificados/buildCertificado.js"
 
 export default {
     components: { pesquisaDialog },
@@ -83,7 +88,8 @@ export default {
             userStore: userStore(),
             enabled: false,
             status: "fechada",
-            presenca: false
+            presenca: false,
+            pesquisaDone: false
         }
     },
     watch: {
@@ -121,6 +127,19 @@ export default {
                     console.log("self.status", self.status);
                     self.refresh++
                 })
+
+                let path2 = "/pesquisas/quest01/" + this.$route.params.id + "/" + this.userStore.user.id
+                onValue(rdbref(path2), (snap) => {
+                    let pesquisa = snap.val()
+                    if (pesquisa && pesquisa.done) {
+                        self.pesquisaDone = true
+                    } else {
+                        self.pesquisaDone = false
+                    }
+                    console.log("pesquisa", pesquisa);
+                    self.refresh++
+                })
+                
             }
 
             let presencaID = this.$route.params.id
@@ -160,11 +179,13 @@ export default {
             console.log("presencaID path", path);
             set(rdbref(path), this.userStore.user.id)
 
-            path = "listaPresencaByUsers/" + this.userStore.user.id + "/" + presencaID 
+            path = "listaPresencaByUsers/" + this.userStore.user.id + "/" + presencaID
             console.log("path", path);
             set(rdbref(path), presencaID)
 
             self.$q.notify(notif.success("Sua presença foi registrada com sucesso!"))
+
+            self.$refs.pesquisaDialogRef.show()
         },
 
         getDataUri(url, cb) {
@@ -190,6 +211,39 @@ export default {
         },
 
         verCertificado() {
+            let self = this
+            let params = this.$route.params.id.split(":")
+            let [ salaID, formacaoID, encontroID, areaID ] = params
+            console.log("verCertificado", { areaID, encontro: this.encontro, formacao: this.formacao });
+            let data = {
+                nome: this.userStore.user.nome,
+                nomeTrilha: this.formacao.nome,
+                dataTrilha: moment(this.encontro.data).format("DD/MM/YYYY"),
+                ch: this.formacao.horasAtividade
+            }
+            if (areaID != '') {
+                let hora = this.encontro.horaInicio.split(":")[0]
+                let periodo = "matutino"
+                if (hora >= 12 && hora < 18) {
+                    periodo = "vespertino"
+                }
+                if (hora >= 18 && hora < 24) {
+                    periodo = "noturno"
+                }
+                data.periodo = periodo
+                get(rdbref("/areas/" + areaID)).then((snap) => {
+                    let area = snap.val()
+                    data.area = area.nome
+                    console.log("data", data);
+                    buildCertificado("CERT-MOD-e1a0", data)
+                })
+            } else {
+                console.log("data", data);
+                buildCertificado("CERT-MOD-eff9", data)
+            }
+        },
+
+        verCertificadoOld() {
             let self = this
             console.log("verCertificado");
             let certImagePath = "https://firebasestorage.googleapis.com/v0/b/prj-salamais-prd.appspot.com/o/certificados%2Fcertificado-v2.png?alt=media&token=37c4e7ce-8024-4ecc-b2f1-7018158f8557"

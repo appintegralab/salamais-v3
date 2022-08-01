@@ -27,7 +27,7 @@ function snapToArray(snap) {
     return(vet);
 }
 
-const rdbmode = "dev" //"dev" //"prod"
+const rdbmode = "prod" //"dev" //"prod"
 const paths = {
     "prod": "/salamais/",
     "dev": "/salamais-dev/"

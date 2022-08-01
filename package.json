@@ -20,6 +20,7 @@
     "mime-types": "^2.1.35",
     "moment": "^2.29.3",
     "pdfjs-dist": "^2.14.305",
+    "pdfmake": "^0.2.5",
     "pinia": "^2.0.13",
     "qr-code-styling": "^1.6.0-rc.1",
     "quasar": "^2.7.3",
