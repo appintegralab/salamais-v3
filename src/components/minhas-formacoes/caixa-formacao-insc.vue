@@ -28,7 +28,7 @@
                             <span class="iconify text-[10pt] mr-1" data-icon="ic:school"></span>
                             <span class="text-[7pt] pt-[2px]">ver formação</span>
                         </q-btn>
-                        <q-btn outline size="5pt" class="px-2 text-[7pt] ml-4 text-red-800">
+                        <q-btn v-if="!formacao.encerrada" outline size="5pt" class="px-2 text-[7pt] ml-4 text-red-800">
                             <span class="iconify text-[8pt] mr-1" data-icon="ic:cancel"></span>
                             <span class="text-[7pt] pt-[2px]">cancelar inscrição</span>
                             <q-menu v-model="removeDialog" anchor="bottom right" self="bottom left">

@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { rdb, snapToArray } from "@/firebase/firebase.js"
+import { rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
 import { ref, onValue, set, get, orderByChild, query, equalTo } from "firebase/database"
 import notif from "../notif.js"
 import moment from 'moment/min/moment-with-locales'
@@ -149,8 +149,10 @@ export default {
     },
     mounted() {
         let self = this
-        get(ref(rdb, "/salamais/areas/")).then((snap) => {
+        console.log("dialog-new-user mounted");
+        get(rdbref("areas/")).then((snap) => {
             self.areas = snap.val()
+            console.log("areas",self.areas);
         })
     },
     methods: {

@@ -12,7 +12,7 @@
         <div class="pt-1 pb-3 flex-1">
             <caixaformacaoinfo :formacao="formacao" />
             <div class="mt-2" v-if="!formacao.inscricao">
-                <q-btn outline @click="$emit('inscricao',formacao)" class="px-2 text-gray-700" size="6px">
+                <q-btn v-if="!formacao.encerrada" outline @click="$emit('inscricao',formacao)" class="px-2 text-gray-700" size="6px">
                     <span class="text-[10pt] iconify" data-icon="mdi:calendar-check"></span>
                     <span class="ml-1 pt-[2px] text-[7pt]">
                         Realizar inscrição

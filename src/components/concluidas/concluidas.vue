@@ -140,6 +140,13 @@ export default {
     },
     methods: {
 
+        addCertificadosMult() {
+            onValue(rdbref("facilitadores/" + this.userStore.user.id), async (snap) => {
+                let formacoes = snap.val()
+                console.log("formações mult", formacoes);
+            })
+        },
+
         async load() {
             let self = this
             self.rows = []
@@ -164,6 +171,40 @@ export default {
                 self.rows.push(item)
             }
             console.log("self.rows", self.rows);
+
+            snap = await get(rdbref("facilitadores/" + this.userStore.user.id))
+            let formacoes = snap.val()
+            console.log("formações mult", formacoes);
+            if (formacoes) {
+                for (let key in formacoes.formacoes) {
+                    let formacaoID = key
+                    let encontros = formacoes.formacoes[key].encontros
+                    let areaID = ""
+                    for (let keyEnc in encontros) {
+                        let encontroID = keyEnc
+                        let salaID = encontros[keyEnc].salaID
+                        if (encontros[keyEnc].area != undefined) {
+                            areaID = encontros[keyEnc].area.id
+                        }
+                        console.log({ salaID, formacaoID, encontroID, areaID });
+                        let ret = await getFields("/formacoes/" + formacaoID, ["nome", "descr", "dataInicio", "dataTermino", "horasAtividade"])
+                        let item = {
+                            nome: ret.nome,
+                            formacao: { id: formacaoID, ...ret }
+                        }
+                        let path = "/formacoes/" + formacaoID + "/encontros/" + encontroID
+                        ret = await getFields(path, ["data", "horaInicio", "horaTermino"])
+                        item.encontro = {
+                            mult: true,
+                            id: encontroID,
+                            salaID, areaID,
+                            ...ret
+                        }
+                        self.rows.push(item)
+                    }
+                }
+            }
+
         },
 
         verCertificado(item) {
@@ -174,7 +215,13 @@ export default {
                 dataTrilha: moment(item.encontro.data).format("DD/MM/YYYY"),
                 ch: item.formacao.horasAtividade
             }
-            if (item.encontro.areaID != '') {
+            if (item.encontro.mult != undefined) {
+                console.log("multiplicador");
+                data.ch = 10
+                buildCertificado("CERT-MOD-6be4", data)
+                return
+            }
+            if (item.encontro.areaID != undefined && item.encontro.areaID != '') {
                 let hora = item.encontro.horaInicio.split(":")[0]
                 let periodo = "matutino"
                 if (hora >= 12 && hora < 18) {

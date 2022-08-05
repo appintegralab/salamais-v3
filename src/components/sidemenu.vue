@@ -39,7 +39,7 @@
                     <span class="iconify" data-icon="ph:chalkboard-teacher-fill"></span>
                 </div>
                 <div class="ml-1 text-[10pt] text-slate-900 froboto fw-400">
-                    Facilitador
+                    Multiplicador
                 </div>
             </div>
         </q-scroll-area>

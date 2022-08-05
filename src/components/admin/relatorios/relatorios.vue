@@ -24,7 +24,7 @@ import XLSX from "xlsx"
 import moment from 'moment/min/moment-with-locales'
 import 'moment/locale/pt-br.js'
 import { db, rdb, snapToArray, rdbref } from "@/firebase/firebase.js"
-import { ref, get, onValue, query, orderByChild, equalTo } from "firebase/database"
+import { ref, get, set, onValue, query, orderByChild, equalTo } from "firebase/database"
 
 export default {
     components: {},
@@ -39,6 +39,7 @@ export default {
                     titulo: "Usuários (professores)",
                     action: this.exportUsuarios
                 },
+                //{ titulo: "CORREÇÃO INSCRICOES", action: this.correcaoInscricoes },
             ]
         }
     },
@@ -113,6 +114,34 @@ export default {
                 XLSX.writeFile(wb, fileName);
             })
 
+        },
+
+        correcaoInscricoes() {
+            console.log("correcaoInscricoes");
+
+            get(rdbref("/salamais/formacoes")).then((snap) => {
+                let data = snap.val()
+                console.log("data",data);
+                let ajustes = {}
+                for(let keyF in data) {
+                    let encontros = data[keyF].encontros
+                    for(let keyE in encontros) {
+                        let areas = encontros[keyE].areas
+                        for(let areaID in areas) {
+                            let salas = areas[areaID].salas
+                            for(let salaID in salas) {
+                                let inscritos = salas[salaID].inscricoes
+                                for(let userID in inscritos) {
+                                    let path = `${keyF}/encontros/${keyE}/areas/${areaID}/salas/${salaID}/inscricoes/${userID}`
+                                    ajustes[path] = userID
+                                    set(rdbref("formacoes/"+path),userID)
+                                }
+                            }
+                        }
+                    }
+                }
+                console.log("ajustes ["+Object.keys(ajustes).length+"]",ajustes);
+            })
         }
     },
 }

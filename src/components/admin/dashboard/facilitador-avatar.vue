@@ -1,10 +1,10 @@
 <template>
     <div v-if="user != null">
-        <q-avatar size="28px">
+        <q-avatar size="22px">
             <q-img :src="user.urlFoto" />
         </q-avatar>
         <router-link :to="{ path: '/profile/'+user.id }" target="_blank">
-            <span class="ml-[2px] text-[8pt]">{{ user.nome.trim().split(" ")[0] }}</span>
+            <span class="ml-[2px] text-[7pt] font-light">{{ user.nome.trim().split(" ")[0] }}</span>
         </router-link>
         <q-tooltip :delay="800" class="text-[7pt]">
             {{ user.nome }}

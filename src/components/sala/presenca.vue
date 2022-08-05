@@ -8,7 +8,7 @@
                 teste pesquisa
             </q-btn>
         </div>
-        <div class="fw-600 text-[10pt]" v-if="status != 'liberada'">
+        <div class="fw-600 text-[10pt]" v-if="status != 'liberada' && status != 'encerrada'">
             <div class="flex items-center justify-between border rounded p-1 text-[10pt] fw-300 bg-gray-200">
                 <div>
                     Não liberada
@@ -50,7 +50,48 @@
                                     <span class="iconify text-[13pt]" data-icon="mdi:certificate-outline"></span>
                                     <span class="ml-1">certificado</span>
                                 </q-btn>
-                                <q-btn v-if="!pesquisaDone" @click="$refs.pesquisaDialogRef.show()" size="xs" outline class="text-black px-1 ml-2">
+                                <q-btn v-if="!pesquisaDone" @click="$refs.pesquisaDialogRef.show()" size="xs" outline
+                                    class="text-black px-1 ml-2">
+                                    <span class="iconify text-[11pt]" data-icon="mdi:chat-question-outline"></span>
+                                    <span class="ml-1">pesquisa</span>
+                                </q-btn>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fw-600 text-[10pt]" v-if="status == 'encerrada'">
+            <div v-if="!presenca" class="border rounded text-[10pt] fw-300 bg-gray-200">
+                <div class="flex items-center justify-between border rounded p-1 text-[10pt] fw-300 bg-gray-200">
+                    <div>
+                        Não registrada
+                    </div>
+                    <div>
+                        <span class="iconify text-[12pt]" data-icon="ic:outline-info"></span>
+                        <q-tooltip :delay="700">
+                            Registro de presença foi encerrado pelo multiplicador.
+                        </q-tooltip>
+                    </div>
+                </div>
+            </div>
+            <div v-if="presenca" class="border rounded p-2 text-[10pt] fw-300 bg-gray-100">
+                <div>
+                    <div class="flex items-center justify-center">
+                        <q-avatar class="bg-slate-300">
+                            <span class="iconify text-green-900 text-[26pt]" data-icon="mdi:certificate-outline"></span>
+                        </q-avatar>
+                        <div class="mx-2">
+                            <div class="text-center rounded bg-slate-200 text-green-900 fw-500 px-2 pt-[2px]">
+                                Presença registrada!
+                            </div>
+                            <div class="flex mt-2 text-center">
+                                <q-btn @click="verCertificado" size="xs" outline class="text-black px-1">
+                                    <span class="iconify text-[13pt]" data-icon="mdi:certificate-outline"></span>
+                                    <span class="ml-1">certificado</span>
+                                </q-btn>
+                                <q-btn v-if="!pesquisaDone" @click="$refs.pesquisaDialogRef.show()" size="xs" outline
+                                    class="text-black px-1 ml-2">
                                     <span class="iconify text-[11pt]" data-icon="mdi:chat-question-outline"></span>
                                     <span class="ml-1">pesquisa</span>
                                 </q-btn>
@@ -139,7 +180,7 @@ export default {
                     console.log("pesquisa", pesquisa);
                     self.refresh++
                 })
-                
+
             }
 
             let presencaID = this.$route.params.id
@@ -213,7 +254,7 @@ export default {
         verCertificado() {
             let self = this
             let params = this.$route.params.id.split(":")
-            let [ salaID, formacaoID, encontroID, areaID ] = params
+            let [salaID, formacaoID, encontroID, areaID] = params
             console.log("verCertificado", { areaID, encontro: this.encontro, formacao: this.formacao });
             let data = {
                 nome: this.userStore.user.nome,

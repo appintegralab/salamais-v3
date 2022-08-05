@@ -3,7 +3,7 @@
         <div class="col-span-7 sm:col-span-2 pr-2">
             <div class="border rounded p-1 text-sm">
                 <div class="fw-600 text-[10pt]">
-                    Facilitadores
+                    Multiplicadores
                 </div>
                 <hr class="mb-1">
                 <div class="fw-600 text-[8pt]">

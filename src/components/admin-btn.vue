@@ -59,6 +59,7 @@ export default {
                 { label: "Modelos Certificados", icon: "mdi:file-certificate-outline", link: { path: '/admin-tmpl-certificados' } },
                 { separator: true  },
                 { label: "Relatórios", icon: "clarity:export-outline-badged", link: { path: '/admin-relatorios' } },
+                { label: "Dashboards", icon: "ic:twotone-dashboard-customize", link: { path: '/dashboards' } },
                 { label: "Usuários", icon: "ic:people", link: { path: '/admin-usuarios' } },
                 { separator: true  },
                 { label: "Testar envio email", icon: "ic:mail", link: { path: '/admin-mail-test' } },
@@ -84,6 +85,8 @@ export default {
         checkEnabled() {
             let cpf = this.userStore.user.cpf
             //console.log(cpf);
+            //28854077860 THAIS
+            //36126741889 CAMILA
             let lista = ["18374109840", "28854077860", "99271176804", "12345678900", "36126741889"]
             if (lista.lastIndexOf(cpf) != -1) {
                 this.enabled = true

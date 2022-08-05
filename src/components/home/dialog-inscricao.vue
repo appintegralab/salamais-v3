@@ -60,7 +60,7 @@
                         <div v-if="!formacao.turmasPorArea">
                             <div v-for="(encontro, index) in formacao.encontros" :key="index">
                                 <div class="flex items-center mt-1 p-1 bg-slate-200 rounded">
-                                    <q-radio color="grey" v-model="opcao" :val="index" dense size="34px" />
+                                    <q-radio v-if="!encontro.fechado" color="grey" v-model="opcao" :val="index" dense size="34px" />
                                     <div>
                                         <span class="ml-1 text-[10pt] fw-500 px-1 rounded text-slate-700 bg-slate-100">
                                             {{ moment(encontro.data).format("DD/MM/YYYY") }}
@@ -489,7 +489,7 @@ export default {
                         if (area != undefined && area != "") {
                             //inscricao na sala por área
                             let salaIDCtrl = formacao.encontros[k].areas[area].salaIDCtrl
-                            let path = `/salamais/formacoes/${formacao.id}/encontros/${k}/areas/${area}/salas/sala${salaIDCtrl}/inscricoes/`
+                            let path = `formacoes/${formacao.id}/encontros/${k}/areas/${area}/salas/sala${salaIDCtrl}/inscricoes/`
                             console.log("path", path + self.userStore.user.id);
                             set(rdbref(path + self.userStore.user.id), self.userStore.user.id)
 

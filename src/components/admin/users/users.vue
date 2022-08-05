@@ -19,6 +19,12 @@
                                 </div>
                             </div>
                             <div>
+                                
+                                <q-btn v-if="isMarcelo" size="xs" class="px-2 mr-3" @click="corrigirCPFs">
+                                    <span class="iconify text-[12pt] mr-1" data-icon="ion:warning" />
+                                    corrigir CPFs
+                                </q-btn>
+
                                 <q-btn size="xs" class="px-2" @click="$refs.dialoguserref.show()">
                                     <span class="iconify text-[12pt] mr-1" data-icon="ion:add-circle-outline" />
                                     adicionar usuário
@@ -113,12 +119,20 @@ export default {
                 { label: '', sortable: false },
             ],
             rows: [],
-            removeDialog: {}
+            removeDialog: {},
+            userStore: userStore(),
         }
     },
     computed: {
         moment() {
             return moment
+        },
+        isMarcelo() {
+            let cpf = this.userStore.user.cpf
+            if (cpf == '18374109840') {
+                return true
+            } 
+            return false
         }
     },
     mounted() {
@@ -142,6 +156,25 @@ export default {
             console.log(item);
             set(rdbref("usuarios/" + item.id), null)
             self.$q.notify(notif.success("Usuário excluido com sucesso"))
+        },
+
+        corrigirCPFs() {
+            console.log("corrigirCPFs");
+            //console.log("this.rows",this.rows);
+            let cpfs = []
+            for(let i in this.rows) {
+                let cpf = ""+this.rows[i].cpf
+                if(cpf.indexOf(".") != -1) {
+                    let newCpf = cpf.replaceAll("-","").replaceAll(".","")
+                    cpfs.push({
+                        id: this.rows[i].id,
+                        cpf: cpf,
+                        newCpf
+                    })
+                    set(rdbref("usuarios/"+this.rows[i].id+"/cpf"),newCpf)
+                }
+            }
+            console.log("cpfs",cpfs);
         }
     }
 }

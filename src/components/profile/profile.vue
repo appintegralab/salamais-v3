@@ -96,7 +96,7 @@
                 </q-tab>
                 <q-tab v-if="isMe && facilitador" name="facilitador" class=""
                     style="height: 30px; max-height: 30px; min-height: 30px">
-                    <span class="text-[8pt]">Facilitador</span>
+                    <span class="text-[8pt]">Multiplicador</span>
                 </q-tab>
             </q-tabs>
         </div>
@@ -172,16 +172,16 @@ export default {
             console.log("formacao mounted", this.$route.params);
             get(rdbref("usuarios/"+this.$route.params.id)).then((snap) => {
                 let data = snap.val()
-                if (data.areas == undefined) {
+                if (!data || data.areas == undefined) {
                     data.areas = []
                 }
-                if (data.cargo == undefined) {
+                if (!data || data.cargo == undefined) {
                     data.cargo = "profHor"
                 }
-                if (data.campus == undefined) {
+                if (!data || data.campus == undefined) {
                     data.campus = "102"
                 }
-                if (data.ies == undefined) {
+                if (!data || data.ies == undefined) {
                     data.ies = "USJT"
                 }
                 self.user = data

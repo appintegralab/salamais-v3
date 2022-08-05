@@ -5,7 +5,7 @@
                 <span class="iconify" data-icon="mdi:school" data-inline="false"></span>
             </div>
             <div>
-                Meus encontros como facilitador
+                Meus encontros como multiplicador
             </div>
         </div>
         <div class="mx-4">

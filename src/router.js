@@ -19,6 +19,7 @@ const routes = [
     { path: '/admin-tmpl-certificados', component: () => import("@/components/admin/tmpl-certificados/tmpl-certificados.vue") },
     { path: '/form-teste', component: () => import("@/components/admin/tmpl-certificados/form-teste.vue") },
     { path: '/qrcode-lab', component: () => import("@/components/admin/tmpl-certificados/qrcode/qrcode-lab.vue") },
+    { path: '/dashboards', component: () => import("@/components/admin/dashboard/dashboard.vue") },
 ]
 
 const router = createRouter({

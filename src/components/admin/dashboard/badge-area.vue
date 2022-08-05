@@ -1,6 +1,6 @@
 <template>
     <span :style="'background-color:' + area.cor"
-        class="leading-3 ml-1 text-[6pt] fw-700 px-1 pt-[1px] rounded text-white">
+        class="leading-3 ml-1 text-xs fw-700 px-1 pt-[1px] rounded text-white">
         {{ area.sigla }}
         <q-tooltip class="" :delay="800">
             <div class="flex items-center justify-center">

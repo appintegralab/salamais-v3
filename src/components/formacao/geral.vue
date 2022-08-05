@@ -1,7 +1,7 @@
 <template>
     <div class="p-2" v-if="formacaoObj != null">
         <div class="mb-2" v-if="!formacaoObj.inscricao">
-            <q-btn outline @click="$refs.dialoginscricaoref.show(formacaoObj)" class="px-2 text-gray-700" size="6px">
+            <q-btn v-if="!formacao.encerrada" outline @click="$refs.dialoginscricaoref.show(formacaoObj)" class="px-2 text-gray-700" size="6px">
                 <span class="text-[8pt] iconify" data-icon="mdi:calendar-check"></span>
                 <span class="ml-1 pt-[2px] text-[6pt]">
                     Realizar inscrição
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="flex items-center ml-1 pt-[2px] fw-600 text-[8pt]">
-                    <q-btn outline size="5pt" class="px-2 text-[7pt] ml-4 text-red-800">
+                    <q-btn v-if="!formacao.encerrada" outline size="5pt" class="px-2 text-[7pt] ml-4 text-red-800">
                         <span class="iconify text-[8pt] mr-1" data-icon="ic:cancel"></span>
                         cancelar inscrição
                         <q-menu v-model="removeDialog" anchor="bottom right" self="bottom left">

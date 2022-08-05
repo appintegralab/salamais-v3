@@ -2,7 +2,7 @@
     <div v-if="user != null">
         <div class="mt-1 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7">
             <div class="col-span-3 sm:col-span-3 md:col-span-3 pb-1 text-xs border-b fw-500">
-                Dados pessoais
+                Dados pessoais 
             </div>
             <div v-if="isUserLog" class="col-span-1 pb-1 text-xs border-b fw-500 flex justify-end">
                 <q-btn @click="$refs.formedituserref.show(user)" size="xs" class="px-2 flex items-center">
@@ -19,7 +19,7 @@
                 {{ user.nome }}
             </div>
         </div>
-        <div class="mt-1 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7">
+        <div v-if="isUserLog || isAdmin" class="mt-1 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7">
             <div class="col-span-1 bg-slate-200 border rounded p-1 text-xs fraleway fw-600">
                 CPF:
             </div>
@@ -126,6 +126,15 @@ export default {
         },
         isUserLog() {
             return this.userStore.user.id == this.user.id
+        },
+        isAdmin() {
+            let cpf = this.userStore.user.cpf
+            //console.log(cpf);
+            let lista = ["18374109840", "28854077860", "99271176804", "12345678900", "36126741889"]
+            if (lista.lastIndexOf(cpf) != -1) {
+                return true
+            } 
+            return false
         }
     },
     mounted() {
