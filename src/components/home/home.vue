@@ -72,7 +72,7 @@ export default {
                     get(rdbref("formacoes")).then((snap) => {
                         let formacoes = snapToArray(snap)
                         if (formacoes != null) {
-                            formacoes = lodash.orderBy(formacoes,'dataInicio','asc')
+                            formacoes = lodash.orderBy(formacoes,'dataInicio','desc')
                             console.log("formacoes", formacoes);
                             for (let i in formacoes) {
                                 formacoes[i].inscricao = false
@@ -104,7 +104,7 @@ export default {
                     get(rdbref("formacoes")).then((snap) => {
                         let formacoes = snapToArray(snap)
                         if (formacoes != null) {
-                            formacoes = lodash.orderBy(formacoes,'dataInicio','asc')
+                            formacoes = lodash.orderBy(formacoes,'dataInicio','desc')
                             console.log("formacoes", formacoes);
                             self.formacoes = formacoes
                             self.qtde = Object.keys(formacoes).length

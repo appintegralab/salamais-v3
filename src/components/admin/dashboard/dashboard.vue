@@ -20,6 +20,9 @@
                 <q-tab-panel name="participacao">
                     <participacao />
                 </q-tab-panel>
+                <q-tab-panel name="pesquisa">
+                    <pesquisa />
+                </q-tab-panel>
             </q-tab-panels>
         </div>
     </div>
@@ -35,7 +38,8 @@ import { defineAsyncComponent } from "vue";
 
 export default {
     components: {
-        "participacao": defineAsyncComponent({ loader: () => import('./participacao.vue') }),
+        "participacao": defineAsyncComponent({ loader: () => import('./participacao/participacao.vue') }),
+        "pesquisa": defineAsyncComponent({ loader: () => import('./pesquisa/pesquisa.vue') }),
     },
     data() {
         return {

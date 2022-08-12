@@ -4,7 +4,7 @@ import { Quasar, Notify } from 'quasar'
 import quasarLang from 'quasar/lang/pt-BR'
 import { plugin, defaultConfig } from '@formkit/vue'
 import { pt } from '@formkit/i18n'
-
+import VueApexCharts from "vue3-apexcharts";
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -34,6 +34,7 @@ app
         // Define the active locale
         locale: 'pt'
     }))
+    .use(VueApexCharts)
     
 
 app.mount('#app')

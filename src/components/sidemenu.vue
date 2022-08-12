@@ -24,6 +24,15 @@
                     Minhas inscrições
                 </div>
             </div>
+            <div @click="$router.push({ path: '/assincronas' })"
+                class="flex items-center h-[36px] mr-2 p-2 hover:bg-gray-200 cursor-pointer">
+                <div class="ml-1 text-[18pt] text-slate-900 ">
+                    <span class="iconify" data-icon="ph:chalkboard-teacher-duotone"></span>
+                </div>
+                <div class="ml-1 text-[10pt] text-slate-900 froboto fw-400">
+                    Trilhas Assíncronas
+                </div>
+            </div>
             <div @click="$router.push({ path: '/concluidas' })"
                 class="flex items-center h-[36px] mr-2 p-2 hover:bg-gray-200 cursor-pointer">
                 <div class="ml-1 text-[18pt] text-slate-900">

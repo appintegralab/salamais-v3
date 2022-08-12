@@ -6,6 +6,7 @@ const routes = [
     { path: '/formacoes', component: () => import("@/components/formacao/formacao.vue") },
     { path: '/inscricoes', component: () => import("@/components//minhas-formacoes/minhas-formacoes.vue") },
     { path: '/concluidas', component: () => import("@/components/concluidas/concluidas.vue") },
+    { path: '/assincronas', component: () => import("@/components/assincronas/assincronas.vue") },
     { path: '/formacao/:id', component: () => import("@/components/formacao/formacao.vue") },
     { path: '/profile/:id', component: () => import("@/components/profile/profile.vue") },
     { path: '/admin-formacoes', component: () => import("@/components/admin/formacoes/formacoes.vue") },
